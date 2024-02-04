@@ -8,49 +8,21 @@ package api;
  *
  * @author David Santos
  */
-public class Flag {
+public class Bandeira extends Localidade {
     
     /*
-    ID para identificar a Flag
-    */
-    private int id;
-
-    /*
-    Variavel responsavel para dar o ID automaticamente 
-    */
-    private static int proximoID=0;
-    
-    /*
-       Variavel do tipo jogador para identificar qual jogador sera o dono da flag
+       Variavel do tipo jogador para identificar qual jogador é dono da flag
     */
     private Jogador jogador;
 
     /*
-    Construtor da classe Flag
+    Construtor da classe Bandeira
     
     @param jogador define qual jogador sera o dono da flag
     */
-    public Flag(Jogador jogador) {
-        this.id= ++proximoID;
-        this.jogador = jogador;
+    public Bandeira(String nome) {
+        super(nome);
     }
-
-    /*
-    Retorna o ID da Flag
-    */
-    public int getId() {
-        return id;
-    }
-
-    /*
-    Define o ID de uma Flag
-    
-    @param id para armazenar o id da flag
-    */
-    public void setId(int id) {
-        this.id = id;
-    }
-
 
     /*
     Retorna o jogador que é dono da flag
@@ -66,6 +38,27 @@ public class Flag {
     */
     public void setJogador(Jogador jogador) {
         this.jogador = jogador;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Bandeira other = (Bandeira) obj;
+        return super.getId()==other.getId();
     }
 
  

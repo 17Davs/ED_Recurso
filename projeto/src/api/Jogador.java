@@ -1,11 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package api;
 
-import collections.implementations.ArrayOrderedList;
-
+import collections.implementations.ArrayUnorderedList;
 
 public class Jogador {
 
@@ -22,12 +18,17 @@ public class Jogador {
     /*
     Uma lista de bots que armazenara os bots do jogador
      */
-    private ArrayOrderedList<Bot> bots;
+    private ArrayUnorderedList<Bot> bots;
 
-    /*
-    Local onde a Flag de um Jogador sera colocada
+    /**
+     * Variavel para armazenar o indice do proximo bot
      */
-    private Localidade base;
+    private int proximoBot;
+
+    /**
+     * Bandeira do Jogador
+     */
+    private Bandeira base;
 
     /*
     Construtor para criar um jogador  ja com a quantidade de bots especificada
@@ -36,8 +37,9 @@ public class Jogador {
      */
     public Jogador(int numBots) {
         this.id = ++proximoID;
-        this.bots = new ArrayOrderedList<>(numBots);
+        this.bots = new ArrayUnorderedList<>(numBots);
         this.base = null;
+        proximoBot = 0;
     }
 
     /*
@@ -50,61 +52,52 @@ public class Jogador {
     /*
     Metodo get do tipo Localidade que reorna a Base de um jogador
      */
-    public Localidade getBase() {
+    public Bandeira getBase() {
         return base;
     }
 
-    /*
-    Metodo set para definir a base de um jogador
-    
-    @param base parametro que sera admitida como a base do jogador
+    /**
+     * Metodo set para definir a base de um jogador
+     *
+     * @param base parametro que sera admitida como a base do jogador
      */
-    public void setBase(Localidade base) {
+    public void setBase(Bandeira base) {
         this.base = base;
     }
 
-    /*
-    Metodo que retorna os bots da Queue
+    /**
+     * Metodo que retorna os bots da Queue
+     *
+     * @return lista de bots do jogador
      */
-    public ArrayOrderedList<Bot> getBots() {
+    public ArrayUnorderedList<Bot> getBots() {
         return bots;
     }
 
-    /*
-    *Adiciona um bot na lista de bots   
-    @param bot sera o bot que ira ser colocado na lista
+    /**
+     * Adiciona um bot na lista de bots
+     *
+     * @param bot sera o bot que ira ser colocado na lista
      */
     public void adicionarBot(Bot bot) {
-        bots.add(bot);
+        bots.addToRear(bot);
     }
 
-    /*
+    /**
     * Retorna o tamanho ou o numero de bots presentes na lista de bots
+     * @return numero de bots da lista
      */
     public int getNumeroBots() {
         return bots.size();
     }
-    
-    
-    
 
-//    /*
-//    Metodo que faz um dequeue de um bot que estava na Queue assim retornando o bot seguinte ao que foi retirado
-//     */
-//    public Bot getNextBot() throws EmptyCollectionException {
-//        return bots.dequeue();
-//    }
-
-//    /*
-//    Este metodo vai ser usado na classe GameFacilities e é o responsavel por atribuir um iterador ao bot e coloca-lo na Queue de bots
-//    
-//    @param bot sera o bot que ira ser colocado na Queue
-//    @param iterator sera o iterador que o bot ira utilizar
-//     */
-//    public void iteratorToBot(Bot bot, Iterator<Localidade> iterator) throws EmptyCollectionException {
-//        bot.setIterator(iterator);
-//
-//        bots.enqueue(bot);
-//
-//    }
+    /**
+    * Metodo que retorna o proximo bot a jogar
+     * @return proximo bot
+     */
+    public Bot getNextBot() {
+        Bot bot = bots.get(proximoBot);
+        proximoBot = (proximoBot + 1) % bots.size(); 
+        return bot;
+    }
 }

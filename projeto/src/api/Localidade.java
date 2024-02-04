@@ -33,16 +33,11 @@ public class Localidade {
      */
     private boolean ocupada;
 
-    /*
-    Variavel flag vai ser pre definida por um jogador numa localidade especifica
-     */
-    private Flag flag;
 
     /*
     Construtor que cria uma localidade com um nome especificado.
      */
     public Localidade(String nome) {
-        this.flag = null;
         this.id = ++proximoID;
         this.nome = nome;
         this.ocupada = false;
@@ -54,27 +49,7 @@ public class Localidade {
     public int getId() {
         return id;
     }
-
-    /**
-     * Método para adicionar uma flag em uma localidade.
-     *
-     * @param flag a flag a adicionar
-     * @throws UnsupportedOperationException se já existe uma flag na localidade
-     */
-    public void setFlag(Flag flag) throws UnsupportedOperationException {
-        if (this.flag != null) {
-            throw new UnsupportedOperationException("Já existe uma flag nesta Localização");
-        }
-        this.flag = flag;
-    }
-
-    /*
-    Metodo que retorna a flag da localidade.
-     */
-    public Flag getFlag() {
-        return flag;
-    }
-
+    
     /*
     Metodo que retorna o nome da localidade.
      */

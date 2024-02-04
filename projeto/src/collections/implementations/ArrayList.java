@@ -4,14 +4,10 @@
  */
 package collections.implementations;
 
-
-
-
 import collections.exceptions.EmptyCollectionException;
 import collections.interfaces.ListADT;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
 
 /**
  *
@@ -124,6 +120,23 @@ public abstract class ArrayList<T> implements ListADT<T> {
             }
         }
         throw new NoSuchElementException("Target not found");
+    }
+
+    public T get(int index) throws IllegalArgumentException {
+        if (!indexIsValid(index)) {
+            throw new IllegalArgumentException("Index invalid");
+        }
+        return list[index];
+    }
+
+    /**
+     * retorna true se o indice Ã© valido, caso contrario false
+     *
+     * @param index a ser verificado
+     * @return true se o indice Ã© valido, caso contrario false
+     */
+    private boolean indexIsValid(int index) {
+        return ((index < size()) && index >= 0);
     }
 
     @Override
