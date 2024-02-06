@@ -115,34 +115,38 @@ public class ImportExport {
         return new Mapa<>();
     }
 
-    public static void showMapa(Mapa<Localidade> mapa) {
+    public static String showMapa(Mapa<Localidade> mapa) {
         int numVertices = mapa.getNumVertices();
         double[][] adjMatrix = mapa.getAdjMatrix();
 
-        System.out.println("Mapa:");
+        String string = "";
+        string += "mapa:\n";
 
         for (int i = 0; i < numVertices; i++) {
             for (int j = 0; j < numVertices; j++) {
                 if (adjMatrix[i][j] != 0) {
-                    System.out.println("Localidade " + i + " está conectada a Localidade " + j + " com peso " + adjMatrix[i][j]);
+                    string += "Localidade " + i + " está conectada a Localidade " + j + " com peso " + adjMatrix[i][j] + "\n";
                 }
             }
         }
+        return string;
     }
 
-    static void showMapa(String filePath) {
+    public static String showMapa(String filePath) {
         Mapa<Localidade> mapa = importJSON(filePath);
         int numVertices = mapa.getNumVertices();
         double[][] adjMatrix = mapa.getAdjMatrix();
 
-        System.out.println("Mapa do arquivo " + filePath + ":");
+        String string = "";
+        string += "Mapa do arquivo " + filePath + ":\n";
 
         for (int i = 0; i < numVertices; i++) {
             for (int j = 0; j < numVertices; j++) {
                 if (adjMatrix[i][j] != 0) {
-                    System.out.println("Localidade " + i + " está conectada a Localidade " + j + " com peso " + adjMatrix[i][j]);
+                    string += "Localidade " + i + " está conectada a Localidade " + j + " com peso " + adjMatrix[i][j] + "\n";
                 }
             }
         }
+        return string;
     }
 }

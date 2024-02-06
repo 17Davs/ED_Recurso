@@ -22,6 +22,7 @@ public class Menu {
 
     private static Jogo jogo;
     private static Scanner scanner = new Scanner(System.in);
+    private static final String currentWorkingDir = System.getProperty("user.dir");
 
     private static void mostrarMenuJogo() {
 
@@ -37,7 +38,7 @@ public class Menu {
             System.out.println("| Seleciona uma opção:                 |");
             System.out.println("|                                      |");
             System.out.println("| 01. Criar mapa                       |");
-            System.out.println("| 02. Importar mapa                    |");
+            System.out.println("| 02. Mostrar/Importar mapa            |");
             System.out.println("| 0. Sair                              |");
             System.out.println("+--------------------------------------+");
             System.out.println("\n");
@@ -50,8 +51,7 @@ public class Menu {
                     MenuInial();
                     break;
                 case 2:
-                    ImportarMapa();
-                    MenuInial();
+                    mostrarMapa();
                     break;
                 case 0:
                     System.out.println("saindo do jogo...");
@@ -70,6 +70,11 @@ public class Menu {
         System.out.println("Importação de um mapa!");
         System.out.print("Introduza o nome do mapa:");
         String nomeMapa = scanner.next();
+        jogo.importarMapa(nomeMapa);
+    }
+    
+    private static void ImportarMapa(String nomeMapa) {
+        System.out.println("Importação de um mapa!");
         jogo.importarMapa(nomeMapa);
     }
 
@@ -203,10 +208,41 @@ public class Menu {
 
         } while (opcao != 0);
     }
-    
+
+    private static void mostrarMapa() {
+        int opcao;
+        System.out.print("Introduza o nome do mapa a visualizar: ");
+        String nMapa = scanner.next();
+        jogo.mostrarMapaFromJson(currentWorkingDir + "/src/Files/" + nMapa + ".json");
+        
+        System.out.println("Deseja importar esse mapa ou nao :");
+        do {
+            System.out.println();
+            System.out.println("=========================");
+            System.out.println("      1. SIM             ");//por retirar
+            System.out.println("      2. NAO             ");
+            System.out.println("=========================");
+
+            System.out.println("Introduza sua opcao: ");
+            opcao = scanner.nextInt();
+
+            switch (opcao) {
+
+                case 1:
+                    ImportarMapa(currentWorkingDir + "/src/Files/" + nMapa + ".json");
+                    MenuInial();
+                    break;
+                case 2:
+                    mostrarMenuJogo();
+                    break;
+            }
+
+        } while (opcao != 0);
+    }
+
     private static void showMapaOption() {
         int opcao = 0;
-        
+
         do {
             System.out.println("--------- Visualizar um mapa ---------");
             System.out.println("           1 - Mapa atual             ");
@@ -214,19 +250,19 @@ public class Menu {
             System.out.println("--------------------------------------");
             System.out.print("Introduza sua opcao: ");
             opcao = scanner.nextInt();
-        }while (opcao < 1 || opcao > 2);
-        
+        } while (opcao < 1 || opcao > 2);
+
         switch (opcao) {
             case 1:
                 jogo.mostrarMapa();
                 break;
-            case 2: 
+            case 2:
                 System.out.print("Introduza o nome do mapa :");
-                String name = scanner.next();
-                jogo.mostrarMapaFromJson(name);
+                String nMapa = scanner.next();
+                jogo.mostrarMapaFromJson(currentWorkingDir + "/src/Files/" + nMapa + ".json");
                 break;
         }
-        
+
     }
 
     private static void MenuPreparacao() {
@@ -234,7 +270,6 @@ public class Menu {
         Jogador jogodor1 = criarJogador();
         Jogador jogodor2 = criarJogador();
 
-        
         //bots
     }
 
@@ -320,7 +355,7 @@ public class Menu {
                 System.out.println("Foi escolhido a travessia Árvore geradora de custo minimo para o bot" + bot.getId());
                 jogo.adicionarBot(jogador, bot, TipoEstrategia.MST);
                 break;
-        } 
+        }
     }
 
 }
