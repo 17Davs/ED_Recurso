@@ -39,7 +39,7 @@ public class Jogador {
         this.id = ++proximoID;
         this.bots = new ArrayUnorderedList<>(numBots);
         this.base = null;
-        proximoBot = 0;
+        this.proximoBot = 0;
     }
 
     /*

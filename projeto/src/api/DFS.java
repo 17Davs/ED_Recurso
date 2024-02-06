@@ -24,7 +24,7 @@ public class DFS extends Estrategia {
     }
 
     @Override
-    public void atualizarCaminho(Localidade atual, Bandeira meta, Network<Localidade> grafo) {
+    public void atualizarCaminho(Localidade atual, Network<Localidade> grafo) {
         //gerar o caminho bandeira/base passada como meta
         super.setItr(grafo.iteratorDFS(atual));
     }

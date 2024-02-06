@@ -7,7 +7,7 @@ import api.interfaces.IEstrategia;
  *
  * @author David Santos
  */
-public class Bot implements Comparable<Bot> {
+public class Bot {
 
     /**
      * Variavel que guarda
@@ -36,7 +36,7 @@ public class Bot implements Comparable<Bot> {
 
     /**
      * Construtor da classe Bot
-     */
+    */
     public Bot() {
         id = ++proximoID;
         this.estrategia = null;
@@ -129,9 +129,9 @@ public class Bot implements Comparable<Bot> {
         }
     }
 
-    @Override
-    public int compareTo(Bot o) {
-        return Integer.compare(this.getId(), o.getId());
-    }
+//    @Override
+//    public int compareTo(Bot o) {
+//        return Integer.compare(this.getId(), o.getId());
+//    }
 
 }

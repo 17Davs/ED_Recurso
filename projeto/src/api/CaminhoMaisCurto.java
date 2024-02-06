@@ -14,7 +14,7 @@ import collections.interfaces.NetworkADT;
 public class CaminhoMaisCurto extends Estrategia {
 
     public CaminhoMaisCurto(Bandeira partida, Bandeira meta, NetworkADT<Localidade> grafo) {
-        super(partida, meta, grafo.iteratorShortestPath(partida, partida));
+        super(partida, meta, grafo.iteratorShortestPath(partida, meta));
     }
 
     @Override
@@ -24,9 +24,9 @@ public class CaminhoMaisCurto extends Estrategia {
     }
 
     @Override
-    public void atualizarCaminho(Localidade atual, Bandeira meta, Network<Localidade> grafo) {
+    public void atualizarCaminho(Localidade atual, Network<Localidade> grafo) {
         //gerar o caminho bandeira/base passada como meta
-        super.setItr(grafo.iteratorShortestPath(atual, meta));
+        super.setItr(grafo.iteratorShortestPath(atual, super.getAdversaria()));
     }
 
 }
