@@ -23,7 +23,8 @@ public class Bandeira extends Localidade {
     public Bandeira(int id, String nome) {
         super();
         setNome(nome);
-        setId(id);   
+        setId(id);
+        jogador = null;
     }
 
     /*
