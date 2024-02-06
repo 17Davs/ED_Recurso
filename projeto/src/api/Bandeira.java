@@ -20,8 +20,10 @@ public class Bandeira extends Localidade {
     
     @param jogador define qual jogador sera o dono da flag
     */
-    public Bandeira(String nome) {
-        super(nome);
+    public Bandeira(int id, String nome) {
+        super();
+        setNome(nome);
+        setId(id);   
     }
 
     /*
@@ -40,12 +42,7 @@ public class Bandeira extends Localidade {
         this.jogador = jogador;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        return hash;
-    }
-
+    
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

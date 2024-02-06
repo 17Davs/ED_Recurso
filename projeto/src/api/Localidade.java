@@ -13,73 +13,77 @@ import org.json.simple.JSONObject;
  */
 public class Localidade {
 
-    /*
-    Guarda o ID de cada Localidade
+    /**
+     * Guarda o ID de cada Localidade
      */
     private int id;
 
-    /*
-    Variavel static que vai admitir a acda localidade ter automaticamente seu ID
+    /**
+     * Variavel static que vai admitir a acda localidade ter automaticamente seu
+     * ID
      */
     private static int proximoID = 0;
 
-    /*
-    Variavel vai guardar o nome da Localidade
+    /**
+     * Variavel vai guardar o nome da Localidade
      */
     private String nome;
 
-    /*
-    Variavel vai devolver se a Localidade esta ocupada ou nao
-     */
-    private boolean ocupada;
-
-
-    /*
-    Construtor que cria uma localidade com um nome especificado.
+    /**
+     * Construtor que cria uma localidade com um nome especificado.
+     *
+     * @param nome
      */
     public Localidade(String nome) {
         this.id = ++proximoID;
         this.nome = nome;
-        this.ocupada = false;
+
     }
 
-    /*
-    Metodo que retorna o ID da localidade.
+    protected Localidade() {
+
+    }
+
+    /**
+     * Metodo que retorna o ID da localidade.
+     *
+     * @return id
      */
     public int getId() {
         return id;
     }
-    
-    /*
-    Metodo que retorna o nome da localidade.
+
+    /**
+     * Metodo usado no construtor de bandeira.
+     *
+     * @param id
+     */
+    protected void setId(int id) {
+        if (this instanceof Bandeira) {
+            this.id = id;
+        }
+    }
+
+    /**
+     * Metodo que retorna o nome da localidade.
+     *
+     * @return
      */
     public String getNome() {
         return nome;
     }
 
-    /*
-    Metodo que define o nome da localidade.
+    /**
+     * Metodo que define o nome da localidade.
+     *
+     * @param nome
      */
     public void setNome(String nome) {
         this.nome = nome;
     }
 
-    /*
-    Metodo que verifica se a localidade está ocupada.
-     */
-    public boolean isOcupada() {
-        return ocupada;
-    }
-
-    /*
-    Metodo que define se a localidade está ocupada ou não.
-     */
-    public void setOcupada(boolean ocupada) {
-        this.ocupada = ocupada;
-    }
-
-    /*
-    Método que compara duas localidades com base em seus IDs.
+    /**
+     * Método que compara duas localidades com base em seus IDs.
      */
     @Override
     public boolean equals(Object obj) {

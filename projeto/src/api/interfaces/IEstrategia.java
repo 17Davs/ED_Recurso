@@ -22,6 +22,11 @@ public interface IEstrategia {
      */
     public Bandeira getPartida();
 
+    /**
+     * Método para obter o ponto de bandeira adversária
+     *
+     * @return o nome
+     */
     public Bandeira getAdversaria();
 
     /**
@@ -39,12 +44,13 @@ public interface IEstrategia {
      * @param meta
      * @param grafo
      */
-    public void atualizarCaminho(Localidade atual, Bandeira meta, Network<Localidade> grafo);
+    public void atualizarCaminho(Localidade atual, Network<Localidade> grafo);
 
     /**
      * Método para mover com base na estrategia
      *
-     * @return
+     * @return a localidade para o bot
+     * @throws api.FimCaminhoException
      */
     public Localidade executarMovimento() throws FimCaminhoException;
 

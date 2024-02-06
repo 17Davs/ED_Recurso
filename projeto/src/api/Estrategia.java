@@ -5,8 +5,7 @@
 package api;
 
 import api.interfaces.IEstrategia;
-import collections.implementations.Network;
-import collections.interfaces.NetworkADT;
+
 import java.util.Iterator;
 
 /**

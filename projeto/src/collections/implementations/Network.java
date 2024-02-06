@@ -329,7 +329,7 @@ public class Network<T> implements NetworkADT<T> {
 
     }
 
-    private boolean indexIsValid(int index) {
+    protected boolean indexIsValid(int index) {
         return index >= 0 && index < numVertices;
     }
 
@@ -421,7 +421,7 @@ public class Network<T> implements NetworkADT<T> {
         addEdge(findIndex(vertex1), findIndex(vertex2), weight);
     }
 
-    protected void addEdge(int index1, int index2, double weight) {
+    public void addEdge(int index1, int index2, double weight) {
         if (indexIsValid(index1) && indexIsValid(index2)) {
             adjMatrix[index1][index2] = weight;
             adjMatrix[index2][index1] = weight;

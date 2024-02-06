@@ -2,10 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package collections.implementations;
+package api;
 
-
-import api.Localidade;
+import collections.implementations.ArrayUnorderedList;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,8 +17,9 @@ import org.json.simple.parser.ParseException;
  *
  * @author David Santos
  */
-public class Mapa<T> extends Network<T> {
+public class ImportExport {
 
+<<<<<<< HEAD:projeto/src/collections/implementations/Mapa.java
     private int numVertices;
     private int numArestas;
     
@@ -38,28 +38,20 @@ public class Mapa<T> extends Network<T> {
 
     public Mapa() {
     }
+=======
+    public static void exportToJSON(String filePath, Mapa<Localidade> mapa) {
+        double[][] adjMatrix = mapa.getAdjMatrix();
+        int numVertices = mapa.getNumVertices();
+        ArrayUnorderedList<Localidade> localidades = mapa.getVertexes();
+>>>>>>> 6f941461fb1d1ecd0c959e190710905bfe7da572:projeto/src/api/ImportExport.java
 
-    public Mapa(int capacidade) {
-        super(capacidade);
-    }
-
-    public T[] getVertexes() {
-        T[] temp = (T[]) new Object[numVertices];
-        int i = 0;
-        for (i = 0; i < numVertices; i++) {
-            temp[i] = vertices[i];
-        }
-        return temp;
-    }
-
-    public void exportToJSON(String filePath) {
         JSONObject mapaJSON = new JSONObject();
         mapaJSON.put("NumeroVertices", numVertices);
 
         JSONArray localidadesJSON = new JSONArray();
         for (int i = 0; i < numVertices; i++) {
             JSONObject localizacaoJSON = new JSONObject();
-            localizacaoJSON.put("Nome", ((Localidade) vertices[i]).getNome());
+            localizacaoJSON.put("Nome", (localidades.get(i)).getNome());
             localidadesJSON.add(localizacaoJSON);
         }
         mapaJSON.put("Localidades", localidadesJSON);
@@ -67,7 +59,7 @@ public class Mapa<T> extends Network<T> {
         JSONArray arestasJSON = new JSONArray();
         for (int i = 0; i < numVertices; i++) {
             for (int j = 0; j < numVertices; j++) {
-                if (isAdjacent(i, j)) {
+                if (mapa.isAdjacent(i, j)) {
                     JSONObject arestaJSON = new JSONObject();
                     arestaJSON.put("Origem", i);
                     arestaJSON.put("Destino", j);
@@ -78,19 +70,18 @@ public class Mapa<T> extends Network<T> {
         }
         mapaJSON.put("Arestas", arestasJSON);
 
-        try (FileWriter file = new FileWriter(filePath)) {
+        try ( FileWriter file = new FileWriter(filePath)) {
             file.write(mapaJSON.toJSONString());
             file.close();
             System.out.println("Mapa exportado com sucesso para: " + filePath);
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
     public static Mapa<Localidade> importJSON(String filePath) {
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader(filePath)) {
+        try ( FileReader reader = new FileReader(filePath)) {
             JSONObject jsonObject = null;
             try {
                 jsonObject = (JSONObject) jsonParser.parse(reader);
@@ -122,44 +113,39 @@ public class Mapa<T> extends Network<T> {
 
             return mapa;
         } catch (IOException e) {
-            e.printStackTrace();
         }
         return new Mapa<>();
     }
 
-    public void showMapaFromJSON(String filePath) {
+    public static void showMapa(Mapa<Localidade> mapa) {
 
-        JSONParser jsonParser = new JSONParser();
-
-        try (FileReader reader = new FileReader(filePath)) {
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
-
-            JSONArray localidadesArray = (JSONArray) jsonObject.get("Localidades");
-            JSONArray arestasArray = (JSONArray) jsonObject.get("Arestas");
-
-            System.out.println("Vertices:");
-            for (int i = 0; i < localidadesArray.size(); i++) {
-                JSONObject localidade = (JSONObject) localidadesArray.get(i);
-                System.out.println(localidade.get("Nome"));
-            }
-
-            System.out.println("\nArestas:");
-            for (int i = 0; i < arestasArray.size(); i++) {
-                JSONObject aresta = (JSONObject) arestasArray.get(i);
-                long origem = (long) aresta.get("Origem");
-                long destino = (long) aresta.get("Destino");
-                long peso = (long) aresta.get("Peso");
-
-                String nomeOrigem = ((JSONObject) localidadesArray.get((int) origem)).get("Nome").toString();
-                String nomeDestino = ((JSONObject) localidadesArray.get((int) destino)).get("Nome").toString();
-
-                System.out.println(nomeOrigem + " -- " + nomeDestino + " (Peso: " + peso + ")");
-            }
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
+//        JSONParser jsonParser = new JSONParser();
+//
+//        try ( FileReader reader = new FileReader(filePath)) {
+//            JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
+//
+//            JSONArray localidadesArray = (JSONArray) jsonObject.get("Localidades");
+//            JSONArray arestasArray = (JSONArray) jsonObject.get("Arestas");
+//
+//            System.out.println("Vertices:");
+//            for (int i = 0; i < localidadesArray.size(); i++) {
+//                JSONObject localidade = (JSONObject) localidadesArray.get(i);
+//                System.out.println(localidade.get("Nome"));
+//            }
+//
+//            System.out.println("\nArestas:");
+//            for (int i = 0; i < arestasArray.size(); i++) {
+//                JSONObject aresta = (JSONObject) arestasArray.get(i);
+//                long origem = (long) aresta.get("Origem");
+//                long destino = (long) aresta.get("Destino");
+//                long peso = (long) aresta.get("Peso");
+//
+//                String nomeOrigem = ((JSONObject) localidadesArray.get((int) origem)).get("Nome").toString();
+//                String nomeDestino = ((JSONObject) localidadesArray.get((int) destino)).get("Nome").toString();
+//
+//                System.out.println(nomeOrigem + " -- " + nomeDestino + " (Peso: " + peso + ")");
+//            }
+//        } catch (IOException | ParseException e) {
+//        }
     }
-
 }
-
-
