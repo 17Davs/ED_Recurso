@@ -203,6 +203,31 @@ public class Menu {
 
         } while (opcao != 0);
     }
+    
+    private static void showMapaOption() {
+        int opcao = 0;
+        
+        do {
+            System.out.println("--------- Visualizar um mapa ---------");
+            System.out.println("           1 - Mapa atual             ");
+            System.out.println("      2 - Mapa de um ficheiro         ");
+            System.out.println("--------------------------------------");
+            System.out.print("Introduza sua opcao: ");
+            opcao = scanner.nextInt();
+        }while (opcao < 1 || opcao > 2);
+        
+        switch (opcao) {
+            case 1:
+                jogo.mostrarMapa();
+                break;
+            case 2: 
+                System.out.print("Introduza o nome do mapa :");
+                String name = scanner.next();
+                jogo.mostrarMapaFromJson(name);
+                break;
+        }
+        
+    }
 
     private static void MenuPreparacao() {
 

@@ -63,7 +63,7 @@ public class Network<T> implements NetworkADT<T> {
 
     private void expandCapacity() {
         T[] newVertices = (T[]) (new Object[vertices.length * 2]);
-        double[][] newAdjMatrix = new double[vertices.length  * 2][vertices.length  * 2];
+        double[][] newAdjMatrix = new double[vertices.length * 2][vertices.length * 2];
 
         for (int i = 0; i < numVertices; i++) {
             newVertices[i] = vertices[i];
@@ -396,6 +396,65 @@ public class Network<T> implements NetworkADT<T> {
             currentVertex = precessors[currentVertex];
         }
         return path.iterator();
+    }
+
+    /**
+     * Retorna um grafo representando a árvore geradora de custo mínimo usando o
+     * algoritmo de Kruskal, seguido por uma travessia por largura.
+     *
+     * @param startIndex Vértice a partir do qual a árvore geradora deve iniciar
+     * @return iterador representando a árvore geradora de custo mínimo percorrida usando BFS
+     */
+    public Iterator<T> minimumSpanningTreeBFS(T startIndex) {
+        Network<T> mstGraph = new Network<>();
+
+        PriorityQueue<Edge<T>> edgePriorityQueue = new PriorityQueue<>();
+        int[] setRepresentatives = new int[numVertices];
+
+        // Inicializa os conjuntos
+        for (int i = 0; i < numVertices; i++) {
+            setRepresentatives[i] = i;
+            mstGraph.addVertex(vertices[i]);
+        }
+
+        // Adiciona todas as arestas ao PriorityQueue
+        for (int i = 0; i < numVertices; i++) {
+            for (int j = i + 1; j < numVertices; j++) {
+                double weight = adjMatrix[i][j];
+                if (weight > 0) {
+                    edgePriorityQueue.addElement(new Edge<>(vertices[i], vertices[j], weight), (int) weight);
+                }
+            }
+        }
+
+        // Constrói a MST
+        while (!edgePriorityQueue.isEmpty() && mstGraph.size() < numVertices) {
+            Edge<T> edge = edgePriorityQueue.removeNext();
+            T vertex1 = edge.getVertex1();
+            T vertex2 = edge.getVertex2();
+            int set1 = findSet(setRepresentatives, getIndex(vertex1));
+            int set2 = findSet(setRepresentatives, getIndex(vertex2));
+
+            // Verifica se adicionar a aresta criará um ciclo
+            if (set1 != set2) {
+                mstGraph.addEdge(vertex1, vertex2, edge.getWeight());
+                unionSets(setRepresentatives, set1, set2);
+            }
+        }
+
+        return mstGraph.iteratorBFS(startIndex);
+    }
+
+    // Métodos auxiliares
+    private int findSet(int[] setRepresentatives, int elementIndex) {
+        while (elementIndex != setRepresentatives[elementIndex]) {
+            elementIndex = setRepresentatives[elementIndex];
+        }
+        return elementIndex;
+    }
+
+    private void unionSets(int[] setRepresentatives, int set1, int set2) {
+        setRepresentatives[set1] = set2;
     }
 
     public boolean hasEdge(T vertex1, T vertex2) {

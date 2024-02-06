@@ -35,6 +35,10 @@ public class Mapa<T> extends Network<T> {
         return temp;
     }
       
+    
+    
+      
+    
     public int getNumVertices() {
         return numVertices;
     }

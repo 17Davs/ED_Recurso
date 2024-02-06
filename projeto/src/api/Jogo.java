@@ -32,6 +32,10 @@ public class Jogo {
     public void mostrarMapa() {
         ImportExport.showMapa(mapa);
     }
+    
+    public void mostrarMapaFromJson(String filePath) {
+        ImportExport.showMapa(filePath);
+    }
 
     public void gerarArestas(int quantidadeArestas, TipoMapa tipoMapa) {
         if (tipoMapa != TipoMapa.UNIDIRECIONAL) {
@@ -148,4 +152,8 @@ public class Jogo {
         jogador.adicionarBot(bot);     
 
     }
+
+    
+
+    
 }

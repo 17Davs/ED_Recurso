@@ -6,7 +6,6 @@ package collections.implementations;
 
 import collections.exceptions.ElementNotFoundException;
 import collections.exceptions.EmptyCollectionException;
-import java.util.Arrays;
 
 /**
  *
