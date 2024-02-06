@@ -25,6 +25,16 @@ public class Mapa<T> extends Network<T> {
         return temp;
     }
 
+      public ArrayUnorderedList<T> getApenasT() {
+        ArrayUnorderedList<T> temp = new ArrayUnorderedList<>(numVertices);
+        for (int i=0;i<numVertices;i++){
+            if (vertices[i].getClass().equals(Localidade.class)){
+                temp.addToRear(vertices[i]);
+            }        
+        }
+        return temp;
+    }
+      
     public int getNumVertices() {
         return numVertices;
     }
@@ -46,9 +56,7 @@ public class Mapa<T> extends Network<T> {
         return vertices[index];
     }
     
-    public void definirBandeira(Localidade localidade){
-        
-    }
+    
     
     
 

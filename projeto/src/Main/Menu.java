@@ -1,11 +1,17 @@
 package Main;
 
+import api.BFS;
 import api.Bandeira;
+import api.Bot;
+import api.Jogador;
 import api.Jogo;
 import api.Localidade;
 import api.TipoAresta;
+import api.TipoEstrategia;
 import api.TipoMapa;
+import api.interfaces.IEstrategia;
 import collections.implementations.ArrayUnorderedList;
+import java.util.Iterator;
 import java.util.Scanner;
 
 /**
@@ -21,7 +27,7 @@ public class Menu {
 
         boolean exit = false;
         int option = 0;
- 
+
         do {
 
             System.out.println("\n");
@@ -138,10 +144,10 @@ public class Menu {
                                 jogo.gerarArestas(quantidadeArestas, TipoMapa.BIDIERCIONAL, TipoAresta.PESO_DIFERENTE);
                                 break;
                         }
-                    } while (arestaOpcao < 1 && arestaOpcao > 2);
+                    } while (arestaOpcao < 1 || arestaOpcao > 2);
                     break;
             }
-        } while (opcaoTipo < 1 && opcaoTipo > 2);
+        } while (opcaoTipo < 1 || opcaoTipo > 2);
     }
 
     private static void exportOrNot() {
@@ -164,12 +170,11 @@ public class Menu {
                 jogo.ExportarMapa(nomeMapa);
                 System.out.println();
             }
-        } while (opcao < 1 && opcao > 2);
+        } while (opcao < 1 || opcao > 2);
     }
 
-    
-    private static void MenuInial(){
-        
+    private static void MenuInial() {
+
         int opcao = 0;
         System.out.println("  ======= Loading.... ======  ");
         System.out.println("Capture the flag iniciado com sucesso!");
@@ -187,34 +192,45 @@ public class Menu {
 
             switch (opcao) {
 
-                case 1: 
+                case 1:
                     MenuPreparacao();
-                break;
+                    break;
 
                 case 2:
                     jogo.mostrarMapa();
                     break;
             }
 
-        } while (opcao != 0);    
+        } while (opcao != 0);
     }
-    
-    private static void MenuPreparacao(){
-        
-        //bandeira
-        
-        //jogador 
+
+    private static void MenuPreparacao() {
+
+        Jogador jogodor1 = criarJogador();
+        Jogador jogodor2 = criarJogador();
+
         
         //bots
-        
-        
-        
     }
-    
-   
-    public void criarFlags(Jogador jogador) {
 
-        ArrayUnorderedList<Localidade> localidades = jogo.getLocalidades();
+    private static Jogador criarJogador() {
+        int maxBots = jogo.calculoMaxBots();
+        int numBots;
+        do {
+            System.out.print("Introduza o número de bots para jogador [Valor Máximo " + maxBots + " (20% das localidade)]: ");
+            numBots = scanner.nextInt();
+        } while (numBots > maxBots && numBots < 1);
+
+        Jogador jogador = new Jogador(numBots);
+        criarBandeira(jogador);
+
+        jogo.adicionarJogador(jogador);
+        return jogador;
+    }
+
+    private static void criarBandeira(Jogador jogador) {
+
+        ArrayUnorderedList<Localidade> localidades = jogo.getApenasLocalidades();
 
         System.out.println("======== Definir Base ========");
         System.out.println("Escolha uma base entre as seguintes localidades:");
@@ -222,34 +238,64 @@ public class Menu {
         for (int i = 0; i < localidades.size(); i++) {
             System.out.println((i + 1) + ". " + localidades.get(i).getNome());
         }
-
-        Bandeira bandeira = null;
-
+        int opcao = 0;
         do {
             System.out.print("Introduza o número da localidade para a base: ");
-            int opcao = scanner.nextInt();
+            opcao = scanner.nextInt();
 
             if (opcao >= 1 && opcao <= localidades.size()) {
-                jogo.definirBandeira(localidades.get(opcao - 1));
-
-                if (base.getFlag() == null) {
-                    System.out.println("Base selecionada: " + base.getNome());
-                    Flag flag = new Flag(jogador);
-                    base.setFlag(flag);
-                } else {
-                    System.out.println("Erro: A base já possui uma flag. Escolha outra base.");
-                    base = null;
-                }
+                jogador.setBase(jogo.definirBandeira(localidades.get(opcao - 1)));
             } else {
                 System.out.println("Opção inválida. Tente novamente.");
             }
 
-        } while (base == null);
+        } while (opcao < 1 || opcao > localidades.size());
 
-        jogador.setBase(base);
-        System.out.println("Flag do jogador " + jogador.getId() + " colocada na base " + base.getNome());
+        System.out.println("Bandeira do jogador " + jogador.getId() + " colocada na base " + jogador.getBase().getNome());
         System.out.println("==================================");
 
     }
-    
+
+    private static void criarBot(Jogador jogador) {
+        Bot bot = new Bot();
+        int opcao;
+        do {
+            System.out.println("Bot numero " + bot.getId() + " para o jogador " + jogador.getBots());
+            System.out.println("======= Estrátegia para o bot " + bot.getId() + " =======");
+            System.out.println("      1. Travessia por largura (BFS)       ");
+            System.out.println("    2. Travessia por profundidade (DFS)    ");
+            System.out.println("            3. Shortest Path               ");
+            System.out.println("        4. Arvore geradora Minima          ");
+            System.out.println("===========================================");
+
+            System.out.println("Introduza sua opcao: ");
+            opcao = scanner.nextInt();
+
+            if (opcao < 1 || opcao > 4) {
+                System.out.println(" Opcão Inválida ");
+            }
+        } while (opcao < 1 || opcao > 4);
+
+        Bandeira bandeira = jogador.getBase();
+        switch (opcao) {
+            case 1:
+                System.out.println("Foi escolhido a travessia BFS para o bot " + bot.getId());
+                jogo.adicionarBot(jogador, bot, TipoEstrategia.BFS);
+                break;
+
+            case 2:
+                System.out.println("Foi escolhido a travessia DFS para o bot" + bot.getId());
+                jogo.adicionarBot(jogador, bot, TipoEstrategia.DFS);
+                break;
+            case 3:
+                System.out.println("Foi escolhido a travessia Shortest Path para o bot" + bot.getId());
+                jogo.adicionarBot(jogador, bot, TipoEstrategia.CAMINHO_MAIS_CURTO);
+                break;
+            default:
+                System.out.println("Foi escolhido a travessia Árvore geradora de custo minimo para o bot" + bot.getId());
+                jogo.adicionarBot(jogador, bot, TipoEstrategia.MST);
+                break;
+        } 
+    }
+
 }

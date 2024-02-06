@@ -1,4 +1,3 @@
-
 package api;
 
 import collections.implementations.ArrayUnorderedList;
@@ -26,6 +25,11 @@ public class Jogador {
     private int proximoBot;
 
     /**
+     * Variavel para armazenar o tamanho maximo da lista bots
+     */
+    private int maxBots;
+
+    /**
      * Bandeira do Jogador
      */
     private Bandeira base;
@@ -37,20 +41,26 @@ public class Jogador {
      */
     public Jogador(int numBots) {
         this.id = ++proximoID;
-        this.bots = new ArrayUnorderedList<>(numBots);
+        this.maxBots = numBots;
+        this.bots = new ArrayUnorderedList<>(maxBots);
         this.base = null;
         this.proximoBot = 0;
     }
 
-    /*
-    Metodo get que retorna o ID de um jogador
+    /**
+     * Metodo get que retorna o ID de um jogador
      */
     public int getId() {
         return id;
     }
 
-    /*
-    Metodo get do tipo Localidade que reorna a Base de um jogador
+    public int getMaxBots() {
+        return maxBots;
+    }
+
+    /**
+     * Metodo get do tipo Localidade que reorna a Base de um jogador
+     * @return 
      */
     public Bandeira getBase() {
         return base;
@@ -84,7 +94,8 @@ public class Jogador {
     }
 
     /**
-    * Retorna o tamanho ou o numero de bots presentes na lista de bots
+     * Retorna o tamanho ou o numero de bots presentes na lista de bots
+     *
      * @return numero de bots da lista
      */
     public int getNumeroBots() {
@@ -92,12 +103,13 @@ public class Jogador {
     }
 
     /**
-    * Metodo que retorna o proximo bot a jogar
+     * Metodo que retorna o proximo bot a jogar
+     *
      * @return proximo bot
      */
     public Bot getNextBot() {
         Bot bot = bots.get(proximoBot);
-        proximoBot = (proximoBot + 1) % bots.size(); 
+        proximoBot = (proximoBot + 1) % bots.size();
         return bot;
     }
 }
