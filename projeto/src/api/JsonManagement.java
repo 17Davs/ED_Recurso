@@ -5,11 +5,9 @@
 package api;
 
 /**
- * Aqui vamos implementar todos os metodos a serem usados na classe menu
- * @author David Santos
+ *
+ * @author Utilizador
  */
-public class Jogo {
-    
-    
+public class JsonManagement {
     
 }

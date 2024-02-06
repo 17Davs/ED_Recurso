@@ -20,6 +20,22 @@ import org.json.simple.parser.ParseException;
  */
 public class Mapa<T> extends Network<T> {
 
+    private int numVertices;
+    private int numArestas;
+    
+    public int getNumArestas() {
+        return numArestas;
+    }
+    public int getNumVertices() {
+        return numVertices;
+    }
+    public void setNumArestas(int numArestas) {
+        this.numArestas = numArestas;
+    }
+    public void setNumVertices(int numVertices) {
+        this.numVertices = numVertices;
+    }
+
     public Mapa() {
     }
 
