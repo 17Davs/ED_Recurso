@@ -15,6 +15,9 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 /**
+ * Classe que representa o menu principal do jogo Capture the Flag. Este menu
+ * permite criar mapas, importar mapas, visualizar o mapa, preparar jogadores e
+ * bots, e iniciar o jogo.
  *
  * @author Rafael Coronel
  */
@@ -23,13 +26,15 @@ public class Menu {
     private static Jogo jogo;
     private static Scanner scanner = new Scanner(System.in);
 
+    /**
+     * Mostra o menu principal do jogo, permitindo ao jogador escolher entre
+     * criar mapa, importar mapa, ou sair do jogo.
+     */
     private static void mostrarMenuJogo() {
-
         boolean exit = false;
         int option = 0;
 
         do {
-
             System.out.println("\n");
             System.out.println("+--------------------------------------+");
             System.out.println("|              MENU                    |");
@@ -64,14 +69,21 @@ public class Menu {
             }
 
         } while (!exit);
-
     }
 
+    /**
+     * Importa um mapa a partir de um arquivo JSON com o nome especificado.
+     *
+     * @param nomeMapa Nome do mapa a ser importado.
+     */
     private static void ImportarMapa(String nomeMapa) {
         System.out.println("Importando mapa + " + nomeMapa + "!");
         jogo.importarMapa(nomeMapa);
     }
 
+    /**
+     * Mostra o menu para criar um novo mapa.
+     */
     private static void MenuCriarMapa() {
         //variaveis usadas ao longo do metodo
         String name;
@@ -104,10 +116,15 @@ public class Menu {
 
         pedirTipoMapa(quantidadeArestas);
 
-        //
         exportOrNot();
     }
 
+    /**
+     * Pede ao usuário para escolher o tipo de mapa a ser gerado com base na
+     * quantidade de arestas especificada.
+     *
+     * @param quantidadeArestas Quantidade de arestas no mapa.
+     */
     private static void pedirTipoMapa(int quantidadeArestas) {
         //pedirTipoDeCaminho
         int opcaoTipo = 0;
@@ -151,8 +168,11 @@ public class Menu {
         } while (opcaoTipo < 1 || opcaoTipo > 2);
     }
 
+    /**
+     * Pergunta ao usuário se deseja exportar o mapa gerado e jogar, ou apenas
+     * jogar sem exportar.
+     */
     private static void exportOrNot() {
-
         int opcao = 0;
 
         do {
@@ -175,8 +195,11 @@ public class Menu {
         } while (opcao < 1 || opcao > 2);
     }
 
+    /**
+     * Exibe o menu inicial do jogo, permitindo que o jogador escolha entre
+     * padronizar bots e jogar, visualizar o mapa, ou sair do jogo.
+     */
     private static void MenuInial() {
-
         int opcao = 0;
         System.out.println("  ======= Loading.... ======  ");
         System.out.println("Capture the flag iniciado com sucesso!");
@@ -193,7 +216,6 @@ public class Menu {
             opcao = scanner.nextInt();
 
             switch (opcao) {
-
                 case 1:
                     MenuPreparacao();
                     oJogo();
@@ -207,6 +229,10 @@ public class Menu {
         } while (opcao != 0);
     }
 
+    /**
+     * Mostra o mapa e permite ao usuário escolher se deseja importá-lo para o
+     * jogo.
+     */
     private static void mostrarMapa() {
         int opcao;
         String currentWorkingDir = System.getProperty("user.dir");
@@ -226,7 +252,6 @@ public class Menu {
             opcao = scanner.nextInt();
 
             switch (opcao) {
-
                 case 1:
                     ImportarMapa(currentWorkingDir + "/src/Files/" + nMapa + ".json");
                     MenuInial();
@@ -239,8 +264,11 @@ public class Menu {
         } while (opcao != 0);
     }
 
+    /**
+     * Exibe o menu de preparação do jogo, onde os jogadores são criados e
+     * configurados.
+     */
     private static void MenuPreparacao() {
-
         Jogador jogodor1 = criarJogador();
         Jogador jogodor2 = criarJogador();
 
@@ -249,6 +277,11 @@ public class Menu {
         padronizarBots(jogodor2);
     }
 
+    /**
+     * Padroniza os bots para um jogador.
+     *
+     * @param jogador Jogador para o qual os bots estão sendo padronizados.
+     */
     private static void padronizarBots(Jogador jogador) {
         System.out.println("===========================================");
         System.out.println("|         Menu de Padronização de Bots    |");
@@ -261,6 +294,11 @@ public class Menu {
         }
     }
 
+    /**
+     * Cria um novo jogador para o jogo.
+     *
+     * @return O jogador criado.
+     */
     private static Jogador criarJogador() {
         int maxBots = jogo.calculoMaxBots();
         int numBots;
@@ -276,8 +314,12 @@ public class Menu {
         return jogador;
     }
 
+    /**
+     * Cria uma bandeira para um jogador.
+     *
+     * @param jogador O jogador para o qual a bandeira está sendo criada.
+     */
     private static void criarBandeira(Jogador jogador) {
-
         ArrayUnorderedList<Localidade> localidades = jogo.getApenasLocalidades();
 
         System.out.println("======== Definir Base ========");
@@ -302,9 +344,14 @@ public class Menu {
 
         System.out.println("Bandeira do jogador " + jogador.getId() + " colocada na base " + jogador.getBase().getNome());
         System.out.println("==================================");
-
     }
 
+    /**
+     * Cria um bot para um jogador com base na estratégia escolhida pelo
+     * usuário.
+     *
+     * @param jogador O jogador para o qual o bot está sendo criado.
+     */
     private static void criarBot(Jogador jogador) {
         Bot bot = new Bot();
         int opcao;
@@ -349,11 +396,14 @@ public class Menu {
         }
     }
 
+    /**
+     * Inicia o jogo, exibindo uma mensagem indicando que o jogo foi iniciado.
+     */
     private static void oJogo() {
-
         System.out.println("╔═════════════════════════════════════════════════╗");
         System.out.println("║     JOGO Capture the Flag Iniciado    ║");
         System.out.println("╚═════════════════════════════════════════════════╝");
+
 
         jogo.iniciarJogo();
 
