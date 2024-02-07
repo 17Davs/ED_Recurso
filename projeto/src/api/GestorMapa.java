@@ -31,9 +31,9 @@ public class GestorMapa {
         garantirConexao(tipoMapa, mapa);
 
         int a = 0;
-        quantidadeArestas -= mapa.getNumVertices() - 1;
+        quantidadeArestas -= mapa.getNumVertices();
         while (a < quantidadeArestas) {
-            int peso = gerarNumeroRandom(1, 15);
+            int peso = gerarNumeroRandom(1, 16);
             int i = gerarNumeroRandom(0, mapa.getNumVertices() - 1);
             int j;
             do {
@@ -68,7 +68,7 @@ public class GestorMapa {
         int a = 0;
         quantidadeArestas -= mapa.getNumVertices() - 1;
         while (a < quantidadeArestas) {
-            int peso = gerarNumeroRandom(1, 15);
+            int peso = gerarNumeroRandom(1, 16);
             int i = gerarNumeroRandom(0, mapa.getNumVertices() - 1);
             int j;
             do {
@@ -80,7 +80,7 @@ public class GestorMapa {
                 if (tipoAresta == TipoAresta.MESMO_PESO) {
                     mapa.addEdge(mapa.getVertex(j), mapa.getVertex(i), peso);
                 } else {
-                    int peso2 = gerarNumeroRandom(1, 15);
+                    int peso2 = gerarNumeroRandom(1, 16);
                     mapa.addEdge(mapa.getVertex(j), mapa.getVertex(i), peso2);
                 }
                 a++;
@@ -88,7 +88,7 @@ public class GestorMapa {
 
         }
     }
-    
+
     /**
      * retorna um valor aleatorio entre o min e o max
      *
@@ -101,18 +101,19 @@ public class GestorMapa {
 
         return random.nextInt(max - min) + min;
     }
-    
+
     /**
      * Metodo usado para garantir se o grafo esta conexo ou não
+     *
      * @param tipoMapa
      */
     private static void garantirConexao(TipoMapa tipoMapa, Mapa<Localidade> mapa) {
 
         int i = 0;
-        while (i < mapa.getNumVertices() - 1) {
+        while (i < mapa.getNumVertices()) {
             Localidade origem = (Localidade) mapa.getVertex(i);
-            Localidade destino = (Localidade) mapa.getVertex(i + 1);
-            int peso = GestorMapa.gerarNumeroRandom(1, 15);
+            Localidade destino = (Localidade) mapa.getVertex((i + 1) % mapa.getNumVertices());
+            int peso = GestorMapa.gerarNumeroRandom(1, 16);
             // Verifica se não há uma aresta entre os vértices
             if (!mapa.hasEdge(origem, destino)) {
                 // Adiciona uma aresta entre os vértices
@@ -126,4 +127,16 @@ public class GestorMapa {
         }
     }
 
+    
+    /**
+     * Metodo responsavel por adicionar um vértice ao mapa
+     *
+     * @param nome Nome da localidade
+     * @param mapa
+     */
+    public static void adicionarLocalização(String nome, Mapa<Localidade> mapa) {
+        Localidade localidade = new Localidade(nome);
+        mapa.addVertex(localidade);
+    }
+    
 }

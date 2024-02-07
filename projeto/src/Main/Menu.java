@@ -355,7 +355,7 @@ public class Menu {
         do {
             System.out.print("Introduza o número de bots para jogador [Valor Máximo " + maxBots + " (20% das localidade)]: ");
             numBots = scanner.nextInt();
-        } while (numBots > maxBots && numBots < 1);
+        } while (numBots > maxBots || numBots < 1);
 
         Jogador jogador = new Jogador(numBots);
         criarBandeira(jogador);
@@ -389,7 +389,9 @@ public class Menu {
             opcao = scanner.nextInt();
 
             if (opcao >= 1 && opcao <= localidades.size()) {
-                jogador.setBase(jogo.definirBandeira(localidades.get(opcao - 1)));
+                Bandeira bandeira = jogo.definirBandeira(localidades.get(opcao - 1));
+                jogador.setBase(bandeira);
+                bandeira.setJogador(jogador);           
             } else {
                 System.out.println("Opção inválida. Tente novamente.");
             }

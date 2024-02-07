@@ -335,7 +335,7 @@ public class Network<T> implements NetworkADT<T> {
 
     @Override
     public Iterator iteratorShortestPath(T startVertex, T targetVertex) {
-        return iteratorShortestPath(getIndex(startVertex), getIndex(startVertex));
+        return iteratorShortestPath(getIndex(startVertex), getIndex(targetVertex));
     }
 
     public Iterator iteratorShortestPath(int startIndex, int targetIndex) {
