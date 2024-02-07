@@ -16,10 +16,11 @@ import java.util.Random;
  */
 public class Jogo {
 
-    private Mapa<Localidade> mapa;
+    public Mapa<Localidade> mapa;
     private ArrayUnorderedList<Jogador> jogadores;
     private int proximoJogador;
     private boolean vitoria = false;
+    private static int[][] grafo;
 
     public Jogo() {
         proximoJogador = 0;
@@ -47,42 +48,58 @@ public class Jogo {
         ImportExport.showMapaFromJson(filePath);
     }
 
-    public void gerarArestas(int quantidadeArestas, TipoMapa tipoMapa) {
+    public void gerarArestas(int preenchimento, TipoMapa tipoMapa) {
         if (tipoMapa != TipoMapa.UNIDIRECIONAL) {
             throw new UnsupportedOperationException("Tipo de Mapa invalido para este método");
         }
 
-        for (int a = 0; a < quantidadeArestas; a++) {
+        int quantidadeLocalizacoes = mapa.getNumVertices();
+        int quantidadeArestas = (int) Math.round(((quantidadeLocalizacoes * (quantidadeLocalizacoes - 1)) * ((double) preenchimento / 100)));
+        garantirConexao();
 
+        int a = 0;
+        quantidadeArestas -= mapa.getNumVertices() - 1;
+        while (a < quantidadeArestas) {
             int peso = gerarNumeroRandom(1, 15);
             int i = gerarNumeroRandom(0, mapa.getNumVertices() - 1);
             int j = gerarNumeroRandom(0, mapa.getNumVertices() - 1);
 
-            mapa.addEdge(mapa.getVertex(i), mapa.getVertex(j), peso);
-
+            //if (!mapa.isAdjacent(i, j)) {
+                mapa.addEdge(mapa.getVertex(i), mapa.getVertex(j), peso);
+                a++;
+            //}
+            
         }
 
     }
 
-    public void gerarArestas(int quantidadeArestas, TipoMapa tipoMapa, TipoAresta tipoAresta) {
+    public void gerarArestas(int preenchimento, TipoMapa tipoMapa, TipoAresta tipoAresta) {
         if (tipoMapa != TipoMapa.BIDIERCIONAL) {
             throw new UnsupportedOperationException("Tipo de Mapa invalido para este método");
         }
+        int quantidadeLocalizacoes = mapa.getNumVertices();
+        int quantidadeArestas = (int) Math.round(((quantidadeLocalizacoes * (quantidadeLocalizacoes - 1)) * ((double) preenchimento / 100)));
+        garantirConexao();
 
-        for (int a = 0; a < quantidadeArestas; a++) {
-
+        int a = 0;
+        quantidadeArestas -= mapa.getNumVertices() - 1;
+        while (a < quantidadeArestas) {
             int peso = gerarNumeroRandom(1, 15);
             int i = gerarNumeroRandom(0, mapa.getNumVertices() - 1);
             int j = gerarNumeroRandom(0, mapa.getNumVertices() - 1);
 
-            mapa.addEdge(mapa.getVertex(i), mapa.getVertex(j), peso);
+            if (!mapa.isAdjacent(i, j)) {
+                mapa.addEdge(mapa.getVertex(i), mapa.getVertex(j), peso);
 
-            if (tipoAresta == TipoAresta.MESMO_PESO) {
-                mapa.addEdge(mapa.getVertex(j), mapa.getVertex(i), peso);
-            } else {
-                int peso2 = gerarNumeroRandom(1, 15);
-                mapa.addEdge(mapa.getVertex(j), mapa.getVertex(i), peso2);
+                if (tipoAresta == TipoAresta.MESMO_PESO) {
+                    mapa.addEdge(mapa.getVertex(j), mapa.getVertex(i), peso);
+                } else {
+                    int peso2 = gerarNumeroRandom(1, 15);
+                    mapa.addEdge(mapa.getVertex(j), mapa.getVertex(i), peso2);
+                }
+                a++;
             }
+            
         }
     }
 
@@ -117,7 +134,7 @@ public class Jogo {
     }
 
     public Bandeira definirBandeira(Localidade localidade) {
-       return mapa.definirBandeira(localidade);
+        return mapa.definirBandeira(localidade);
     }
 
     public void adicionarJogador(Jogador jogador) throws UnsupportedOperationException {
@@ -185,29 +202,24 @@ public class Jogo {
 
         Jogador jogadorAtual = jogadores.get(proximoJogador);
         Bot botAtual = jogadorAtual.getNextBot();
-        // Localidade localidadeAnterior = botAtual.getLocalAtual();
         Jogador adversario = jogadores.get((proximoJogador + 1) % 2);
 
         botAtual.movimentar();
-        verificarVitoria(jogadorAtual, botAtual, adversario);
+        verificarVitoria(jogadorAtual, botAtual, adversario); // Verifica a vitória antes de atualizar o próximo jogador
         atualizarProxJogador();
     }
 
     private void verificarVitoria(Jogador jogadorAtual, Bot botAtual, Jogador adversario) {
-        //verificar vitoria
-        /*
-         O jogo termina quando a bandeira de um jogador chega à base da equipa adversária.
-         */
         if (botAtual.getLocalAtual().equals(jogadorAtual.getBase()) && botAtual.getBandeiraAdversaria() != null) {
             System.out.println("===========================================");
             System.out.println("|    O jogador " + jogadorAtual.getId() + " venceu!   |");
             System.out.println("|   Bot " + botAtual.getId() + " devolveu a bandeira adversária  |");
             System.out.println("|    para a sua base em " + botAtual.getLocalAtual().getNome() + "   |");
             System.out.println("===========================================");
-            vitoria = true;
+            vitoria = true; // Define vitoria como verdadeiro se o jogador vencer
         } else {
             verificarRegras(jogadorAtual, botAtual, adversario);
-            vitoria = false; //confirmar
+            // Não defina vitoria como false aqui, já que isso deve ser feito somente após verificar se o jogo terminou
         }
     }
 
@@ -253,6 +265,20 @@ public class Jogo {
                     }
                 }
             }
+        }
+    }
+
+    private void garantirConexao() {
+        int i = 0;
+        while (i < mapa.getNumVertices() - 1) {
+            Localidade origem = (Localidade) mapa.getVertex(i);
+            Localidade destino = (Localidade) mapa.getVertex(i + 1);
+            // Verifica se não há uma aresta entre os vértices
+            if (!mapa.hasEdge(origem, destino)) {
+                // Adiciona uma aresta entre os vértices
+                mapa.addEdge(origem, destino);
+            }
+            i++;
         }
     }
 
