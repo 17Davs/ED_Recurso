@@ -5,8 +5,8 @@
 package api;
 
 /**
- *
- * @author David Santos
+ * Exceçao para quando um bot alcançar o fim de um caminho
+ * @author David Santos e Rafael Coronel
  */
 public class FimCaminhoException extends Exception {
     

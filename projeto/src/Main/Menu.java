@@ -22,7 +22,7 @@ import java.util.Scanner;
  * permite criar mapas, importar mapas, visualizar o mapa, preparar jogadores e
  * bots, e iniciar o jogo.
  *
- * @author Rafael Coronel
+ * @author Rafael Coronel e David Santos
  */
 public class Menu {
 
@@ -38,20 +38,24 @@ public class Menu {
         int option = 0;
 
         do {
-            System.out.println("\n");
-            System.out.println("+--------------------------------------+");
-            System.out.println("|              MENU                    |");
-            System.out.println("+--------------------------------------+");
-            System.out.println("| Seleciona uma opção:                 |");
-            System.out.println("|                                      |");
-            System.out.println("| 01. Criar mapa                       |");
-            System.out.println("| 02. Mostrar/Importar mapa            |");
-            System.out.println("| 0. Sair                              |");
-            System.out.println("+--------------------------------------+");
-            System.out.println("\n");
+            try {
+                System.out.println("\n");
+                System.out.println("+--------------------------------------+");
+                System.out.println("|              MENU                    |");
+                System.out.println("+--------------------------------------+");
+                System.out.println("| Seleciona uma opção:                 |");
+                System.out.println("|                                      |");
+                System.out.println("| 01. Criar mapa                       |");
+                System.out.println("| 02. Mostrar/Importar mapa            |");
+                System.out.println("| 0. Sair                              |");
+                System.out.println("+--------------------------------------+");
+                System.out.println("\n");
 
-            System.out.print("Introduza sua opcao: ");
-            option = scanner.nextInt();
+                System.out.print("Introduza sua opcao: ");
+                option = scanner.nextInt();
+            } catch (InputMismatchException ex) {
+                System.out.println("Introduza o numero novamente:");
+            }
 
             switch (option) {
                 case 1:
@@ -90,7 +94,7 @@ public class Menu {
      */
     private static void MenuCriarMapa() {
         //variaveis usadas ao longo do metodo
-        String name;
+        String name = null;
         int preenchimento = 0;
         int quantidadeLocalizacoes = 0;
 
@@ -102,11 +106,18 @@ public class Menu {
         jogo.inicializarMapa(quantidadeLocalizacoes);
 
         //pedir nome das localizações
-        for (int i = 0; i < quantidadeLocalizacoes; i++) {
-            System.out.print("Introduza o nome da localizaçao " + (i + 1) + ": ");
-            name = scanner.next();
-            jogo.adicionarLocalização(name);
-        }
+        do {
+            for (int i = 0; i < quantidadeLocalizacoes; i++) {
+                System.out.print("Introduza o nome da localizaçao " + (i + 1) + ": ");
+                name = scanner.nextLine();
+                if (name.length() == 0) {
+                    System.out.println("Nome inválido. Por favor, insira um nome válido.");
+                    i--;
+                } else {
+                    jogo.adicionarLocalização(name);
+                }
+            }
+        } while (name.length() == 0);
 
         //pedir preenchimento
         System.out.print("Introduza a percentagem de o quanto deseja que o mapa seja conectado:");
@@ -129,13 +140,20 @@ public class Menu {
         //pedirTipoDeCaminho
         int opcaoTipo = 0;
         do {
-            System.out.println("========   Tipo de Mapa   ========");
-            System.out.println("         1. Unidirecional         ");
-            System.out.println("          2. Bidirecional         ");
-            System.out.println("==================================");
+            try {
+                System.out.println("+--------------------------------------+");
+                System.out.println("|         TIPO DE ARESTAS              |");
+                System.out.println("+--------------------------------------+");
+                System.out.println("|                                      |");
+                System.out.println("| 01. Unidirecional                    |");
+                System.out.println("| 02. Bidirecional                     |");
+                System.out.println("+--------------------------------------+");
 
-            System.out.print("Introduza sua opcao por favor:");
-            opcaoTipo = scanner.nextInt();
+                System.out.print("Introduza sua opcao por favor:");
+                opcaoTipo = scanner.nextInt();
+            } catch (InputMismatchException ex) {
+                System.out.println("Introduza o numero novamente:");
+            }
 
             switch (opcaoTipo) {
                 case 1:
@@ -145,14 +163,22 @@ public class Menu {
                 case 2:
                     int arestaOpcao = 0;
                     do {
-                        System.out.println();
-                        System.out.println("========  Tipo de Aresta  ========");
-                        System.out.println("      1. Mesmo peso nas arestas   ");
-                        System.out.println("   2. Pesos diferente nas arestas ");
-                        System.out.println("==================================");
+                        try {
+                            System.out.println();
+                            System.out.println("\n");
+                            System.out.println("+--------------------------------------+");
+                            System.out.println("|         TIPO DE ARESTAS              |");
+                            System.out.println("+--------------------------------------+");
+                            System.out.println("|                                      |");
+                            System.out.println("| 01. Mesmo peso nas arestas           |");
+                            System.out.println("| 02. Pesos diferentes nas arestas     |");
+                            System.out.println("+--------------------------------------+");
 
-                        System.out.print("Introduza sua opcao por favor:");
-                        arestaOpcao = scanner.nextInt();
+                            System.out.print("Introduza sua opcao por favor:");
+                            arestaOpcao = scanner.nextInt();
+                        } catch (InputMismatchException ex) {
+                            System.out.println("Introduza o numero novamente:");
+                        }
 
                         switch (arestaOpcao) {
                             case 1:
@@ -176,14 +202,22 @@ public class Menu {
         int opcao = 0;
 
         do {
-            System.out.println();
-            System.out.println("============  Export  ============");
-            System.out.println("     1. Exportar o mapa e jogar   ");
-            System.out.println("2. Apenas jogar sem guardar o mapa");
-            System.out.println("==================================");
+            try {
+                System.out.println();
+                System.out.println("\n");
+                System.out.println("+==================================+");
+                System.out.println("|             EXPORT               |");
+                System.out.println("+==================================+");
+                System.out.println("|                                  |");
+                System.out.println("| 1. Exportar o mapa e jogar       |");
+                System.out.println("| 2. Apenas jogar sem guardar mapa |");
+                System.out.println("+==================================+");
 
-            System.out.print("Introduza sua opcao por favor:");
-            opcao = scanner.nextInt();
+                System.out.print("Introduza sua opcao por favor:");
+                opcao = scanner.nextInt();
+            } catch (InputMismatchException ex) {
+                System.out.println("Introduza o numero novamente:");
+            }
 
             if (opcao == 1) {
                 System.out.print("Indica o nome do mapa: ");
@@ -201,17 +235,18 @@ public class Menu {
      */
     private static void MenuInial() {
         int opcao = 0;
-        System.out.println("  ======= Loading.... ======  ");
-        System.out.println("Capture the flag iniciado com sucesso!");
 
         do {
             try {
                 System.out.println();
-                System.out.println("============ Menu do Jogo =============");
-                System.out.println("      1. Padronizar Bots e Jogar       ");//por retirar
-                System.out.println("         2. Visualizar o mapa          ");
-                System.out.println("           0. Sair do jogo             ");
-                System.out.println("=======================================");
+                System.out.println("+--------------------------------------+");
+                System.out.println("|         MENU DO JOGO                 |");
+                System.out.println("+--------------------------------------+");
+                System.out.println("|                                      |");
+                System.out.println("| 1. Padronizar Bots e Jogar           |");//para retirar
+                System.out.println("| 2. Visualizar o mapa                 |");
+                System.out.println("| 0. Sair do jogo                      |");
+                System.out.println("+--------------------------------------+");
 
                 System.out.println("Introduza sua opcao: ");
                 opcao = scanner.nextInt();
@@ -227,7 +262,7 @@ public class Menu {
                         jogo.mostrarMapa();
                         break;
                 }
-            }catch(InputMismatchException ex){
+            } catch (InputMismatchException ex) {
                 System.out.println("Introduza numero: ");
             }
 
@@ -239,7 +274,7 @@ public class Menu {
      * jogo.
      */
     private static void mostrarMapa() {
-        int opcao;
+        int opcao = 0;
         String currentWorkingDir = System.getProperty("user.dir");
         System.out.print("Introduza o nome do mapa a visualizar: ");
         String nMapa = scanner.next();
@@ -247,14 +282,22 @@ public class Menu {
 
         System.out.println("Deseja importar esse mapa ou nao :");
         do {
-            System.out.println();
-            System.out.println("=========================");
-            System.out.println("      1. SIM             ");//por retirar
-            System.out.println("      2. NAO             ");
-            System.out.println("=========================");
+            try {
+                System.out.println();
+                System.out.println("\n");
+                System.out.println("+--------------------------+");
+                System.out.println("|       IMPORTAÇÃO         |");
+                System.out.println("+--------------------------+");
+                System.out.println("|                          |");
+                System.out.println("| 1. SIM                   |");//para retirar
+                System.out.println("| 2. NÃO                   |");
+                System.out.println("+--------------------------+");
 
-            System.out.println("Introduza sua opcao: ");
-            opcao = scanner.nextInt();
+                System.out.println("Introduza sua opcao: ");
+                opcao = scanner.nextInt();
+            } catch (InputMismatchException ex) {
+                System.out.println("Introduza o numero novamente:");
+            }
 
             switch (opcao) {
                 case 1:
@@ -289,11 +332,12 @@ public class Menu {
      * @param jogador Jogador para o qual os bots estão sendo padronizados.
      */
     private static void padronizarBots(Jogador jogador) {
-        System.out.println("===========================================");
-        System.out.println("|         Menu de Padronização de Bots    |");
-        System.out.println("===========================================");
+        System.out.println("\n");
+        System.out.println("+--------------------------------------+");
+        System.out.println("|   MENU DE PADRONIZAÇÃO DE BOTS      |");
+        System.out.println("+--------------------------------------+");
         System.out.println("| Jogador: " + jogador.getId());
-        System.out.println("-------------------------------------------");
+        System.out.println("+--------------------------------------+");
 
         for (int i = 0; i < jogador.getMaxBots(); i++) {
             criarBot(jogador);
@@ -328,28 +372,31 @@ public class Menu {
     private static void criarBandeira(Jogador jogador) {
         ArrayUnorderedList<Localidade> localidades = jogo.getApenasLocalidades();
 
-        System.out.println("======== Definir Base ========");
-        System.out.println("Escolha uma base entre as seguintes localidades:");
+        System.out.println("+--------------------------------------+");
+        System.out.println("|           DEFINIR BASE               |");
+        System.out.println("+--------------------------------------+");
+        System.out.println("| Escolha uma base entre as seguintes  |");
+        System.out.println("| localidades:                         |");
+        System.out.println("+--------------------------------------+");
 
         for (int i = 0; i < localidades.size(); i++) {
             System.out.println((i + 1) + ". " + localidades.get(i).getNome());
         }
+
         int opcao = 0;
         do {
             System.out.print("Introduza o número da localidade para a base: ");
             opcao = scanner.nextInt();
 
             if (opcao >= 1 && opcao <= localidades.size()) {
-
                 jogador.setBase(jogo.definirBandeira(localidades.get(opcao - 1)));
             } else {
                 System.out.println("Opção inválida. Tente novamente.");
             }
-
         } while (opcao < 1 || opcao > localidades.size());
 
         System.out.println("Bandeira do jogador " + jogador.getId() + " colocada na base " + jogador.getBase().getNome());
-        System.out.println("==================================");
+        System.out.println("+--------------------------------------+");
     }
 
     /**
@@ -360,25 +407,31 @@ public class Menu {
      */
     private static void criarBot(Jogador jogador) {
         Bot bot = new Bot();
-        int opcao;
+        int opcao = 0;
+
         do {
-            System.out.println("===========================================");
-            System.out.println("| Estratégia para o bot " + bot.getId() + "{Jogador " + jogador.getId() + "]:");
-            System.out.println("-------------------------------------------");
-            System.out.println("| Opções de Estratégia:                 |");
-            System.out.println("|   1. Travessia por largura (BFS)        |");
-            System.out.println("|   2. Travessia por profundidade (DFS)   |");
-            System.out.println("|   3. Shortest Path                      |");
-            System.out.println("|   4. Árvore geradora Mínima             |");
-            System.out.println("-------------------------------------------");
-            System.out.println("===========================================");
+            try {
+                System.out.println("===========================================");
+                System.out.println("| Estratégia para o bot " + bot.getId() + "{Jogador " + jogador.getId() + "]:");
+                System.out.println("-------------------------------------------");
+                System.out.println("| Opções de Estratégia:                 |");
+                System.out.println("|   1. Travessia por largura (BFS)        |");
+                System.out.println("|   2. Travessia por profundidade (DFS)   |");
+                System.out.println("|   3. Shortest Path                      |");
+                System.out.println("|   4. Árvore geradora Mínima             |");
+                System.out.println("-------------------------------------------");
+                System.out.println("===========================================");
 
-            System.out.println("Introduza sua opcao: ");
-            opcao = scanner.nextInt();
+                System.out.println("Introduza sua opcao: ");
+                opcao = scanner.nextInt();
 
-            if (opcao < 1 || opcao > 4) {
-                System.out.println(" Opcão Inválida ");
+                if (opcao < 1 || opcao > 4) {
+                    System.out.println(" Opcão Inválida ");
+                }
+            } catch (InputMismatchException ex) {
+                System.out.println("Introduza o numero novamente:");
             }
+
         } while (opcao < 1 || opcao > 4);
 
         switch (opcao) {
@@ -407,13 +460,13 @@ public class Menu {
      */
     private static void oJogo() {
         System.out.println("╔═════════════════════════════════════════════════╗");
-        System.out.println("║     JOGO Capture the Flag Iniciado    ║");
+        System.out.println("║     JOGO Capture the Flag Iniciado        ║");
         System.out.println("╚═════════════════════════════════════════════════╝");
 
         jogo.iniciarJogo();
 
         System.out.println("╔═════════════════════════════════════════════════╗");
-        System.out.println("║     JOGO Capture the Flag Terminado   ║");
+        System.out.println("║     JOGO Capture the Flag Terminado       ║");
         System.out.println("╚═════════════════════════════════════════════════╝");
 
     }

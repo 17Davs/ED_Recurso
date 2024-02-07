@@ -12,7 +12,7 @@ import collections.implementations.Network;
 
 /**
  *
- * @author David Santos
+ * @author David Santos e Rafael Coronel
  */
 public interface IEstrategia {
 

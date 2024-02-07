@@ -5,8 +5,8 @@
 package api;
 
 /**
- *
- * @author Utilizador
+ * Classe para gerir a criaçao do mapa
+ * @author Rafael Coronel e David Santos
  */
 public class GestorMapa {
     
