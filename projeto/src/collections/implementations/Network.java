@@ -406,7 +406,7 @@ public class Network<T> implements NetworkADT<T> {
      * @return iterador representando a árvore geradora de custo mínimo percorrida usando BFS
      */
     public Iterator<T> iteratorMST(T startIndex) {
-        Network<T> mstGraph = new Network<>();
+        Network<T> mstGraph = new Network<>(numVertices);
 
         PriorityQueue<Edge<T>> edgePriorityQueue = new PriorityQueue<>();
         int[] setRepresentatives = new int[numVertices];
@@ -428,7 +428,7 @@ public class Network<T> implements NetworkADT<T> {
         }
 
         // Constrói a MST
-        while (!edgePriorityQueue.isEmpty() && mstGraph.size() < numVertices) {
+        while (!edgePriorityQueue.isEmpty()) {
             Edge<T> edge = edgePriorityQueue.removeNext();
             T vertex1 = edge.getVertex1();
             T vertex2 = edge.getVertex2();
@@ -486,6 +486,8 @@ public class Network<T> implements NetworkADT<T> {
             adjMatrix[index2][index1] = weight;
         } else {
             System.out.println(index1 + " " + index2);
+            
+            
             throw new IllegalArgumentException("Vértices inválidos: ");
         }
 
