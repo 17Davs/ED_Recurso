@@ -405,7 +405,7 @@ public class Network<T> implements NetworkADT<T> {
      * @param startIndex Vértice a partir do qual a árvore geradora deve iniciar
      * @return iterador representando a árvore geradora de custo mínimo percorrida usando BFS
      */
-    public Iterator<T> minimumSpanningTreeBFS(T startIndex) {
+    public Iterator<T> iteratorMST(T startIndex) {
         Network<T> mstGraph = new Network<>();
 
         PriorityQueue<Edge<T>> edgePriorityQueue = new PriorityQueue<>();

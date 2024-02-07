@@ -7,6 +7,7 @@ package api.interfaces;
 import api.Bandeira;
 import api.FimCaminhoException;
 import api.Localidade;
+import api.Mapa;
 import collections.implementations.Network;
 
 /**
@@ -35,7 +36,7 @@ public interface IEstrategia {
      *
      * @param grafo
      */
-    public void gerarCaminhoDeVolta(Network<Localidade> grafo);
+    public void gerarCaminhoDeVolta(Mapa<Localidade> grafo);
 
     /**
      * Método para atualizar o iterador/caminho da estratégia
@@ -44,7 +45,7 @@ public interface IEstrategia {
      * @param meta
      * @param grafo
      */
-    public void atualizarCaminho(Localidade atual, Network<Localidade> grafo);
+    public void atualizarCaminho(Localidade atual, Mapa<Localidade> grafo);
 
     /**
      * Método para mover com base na estrategia

@@ -18,13 +18,13 @@ public class CaminhoMaisCurto extends Estrategia {
     }
 
     @Override
-    public void gerarCaminhoDeVolta(Network<Localidade> grafo) {
+    public void gerarCaminhoDeVolta(Mapa<Localidade> grafo) {
         //gerar o caminho inverso apartir da bandeira adversária para a base do jogador
         super.setItr(grafo.iteratorShortestPath(super.getAdversaria(), super.getPartida()));
     }
 
     @Override
-    public void atualizarCaminho(Localidade atual, Network<Localidade> grafo) {
+    public void atualizarCaminho(Localidade atual, Mapa<Localidade> grafo) {
         //gerar o caminho bandeira/base passada como meta
         super.setItr(grafo.iteratorShortestPath(atual, super.getAdversaria()));
     }

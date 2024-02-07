@@ -4,28 +4,24 @@
  */
 package api;
 
-import collections.interfaces.NetworkADT;
+import collections.implementations.Network;
 
-/**
- *
- * @author David Santos
- */
-public class DFS extends Estrategia {
 
-    public DFS(Bandeira partida, Bandeira meta, NetworkADT<Localidade> grafo) {
-        super(partida, meta, grafo.iteratorDFS(partida));
+
+public class MST extends Estrategia{
+    public MST(Bandeira partida, Bandeira meta, Mapa<Localidade> grafo) {
+        super(partida, meta, grafo.iteratorMST(partida));
     }
 
     @Override
     public void gerarCaminhoDeVolta(Mapa<Localidade> grafo) {
         //gerar o caminho inverso apartir da bandeira adversária para a base do jogador
-        super.setItr(grafo.iteratorDFS(super.getAdversaria()));
+        super.setItr(grafo.iteratorMST(super.getAdversaria()));
     }
 
     @Override
     public void atualizarCaminho(Localidade atual, Mapa<Localidade> grafo) {
         //gerar o caminho bandeira/base passada como meta
-        super.setItr(grafo.iteratorDFS(atual));
+        super.setItr(grafo.iteratorMST(atual));
     }
-
 }

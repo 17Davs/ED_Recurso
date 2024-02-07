@@ -17,10 +17,20 @@ public class Jogo {
 
     private Mapa<Localidade> mapa;
     private ArrayUnorderedList<Jogador> jogadores;
-
+    private int proximoJogador;
+    
+    
+    
     public Jogo() {
+        proximoJogador = 0;
+        jogadores = new ArrayUnorderedList<>(2);
+        mapa = null;
     }
 
+    public void inicializarMapa(int capacidade){
+        mapa = new Mapa<>(capacidade);
+    }
+    
     public void importarMapa(String nomeMapa) {
         mapa = ImportExport.importJSON(nomeMapa);
     }
@@ -147,11 +157,15 @@ public class Jogo {
                 estrategia = new MST(jogador.getBase(), inimiga, mapa);
                 break;
         }
-        
+        bot.setLocalAtual(jogador.getBase());
         bot.setEstrategia(estrategia);
         jogador.adicionarBot(bot);     
 
     }
+    
+    
+    
+    
 
     
 
