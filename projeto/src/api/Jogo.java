@@ -98,31 +98,7 @@ public class Jogo {
      * @param tipoMapa identifica se o mapa é Unidirecional ou Bidirecional
      */
     public void gerarArestas(int preenchimento, TipoMapa tipoMapa) {
-        if (tipoMapa != TipoMapa.UNIDIRECIONAL) {
-            throw new UnsupportedOperationException("Tipo de Mapa invalido para este método");
-        }
-
-        int quantidadeLocalizacoes = mapa.getNumVertices();
-        int quantidadeArestas = (int) Math.round(((quantidadeLocalizacoes * (quantidadeLocalizacoes - 1)) * ((double) preenchimento / 100)));
-        garantirConexao(tipoMapa);
-
-        int a = 0;
-        quantidadeArestas -= mapa.getNumVertices() - 1;
-        while (a < quantidadeArestas) {
-            int peso = gerarNumeroRandom(1, 15);
-            int i = gerarNumeroRandom(0, mapa.getNumVertices() - 1);
-            int j;
-            do {
-                j = gerarNumeroRandom(0, mapa.getNumVertices() - 1);
-            } while (j == i);
-
-            //if (!mapa.isAdjacent(i, j)) {
-            mapa.addEdge(mapa.getVertex(i), mapa.getVertex(j), peso);
-            a++;
-            //}
-
-        }
-
+        GestorMapa.gerarArestas(preenchimento, tipoMapa, mapa);
     }
 
     /**
@@ -135,35 +111,7 @@ public class Jogo {
      * diferente
      */
     public void gerarArestas(int preenchimento, TipoMapa tipoMapa, TipoAresta tipoAresta) {
-        if (tipoMapa != TipoMapa.BIDIERCIONAL) {
-            throw new UnsupportedOperationException("Tipo de Mapa invalido para este método");
-        }
-        int quantidadeLocalizacoes = mapa.getNumVertices();
-        int quantidadeArestas = (int) Math.round(((quantidadeLocalizacoes * (quantidadeLocalizacoes - 1)) * ((double) preenchimento / 100)));
-        garantirConexao(tipoMapa);
-
-        int a = 0;
-        quantidadeArestas -= mapa.getNumVertices() - 1;
-        while (a < quantidadeArestas) {
-            int peso = gerarNumeroRandom(1, 15);
-            int i = gerarNumeroRandom(0, mapa.getNumVertices() - 1);
-            int j;
-            do {
-                j = gerarNumeroRandom(0, mapa.getNumVertices() - 1);
-            } while (j == i);
-            if (!mapa.isAdjacent(i, j)) {
-                mapa.addEdge(mapa.getVertex(i), mapa.getVertex(j), peso);
-
-                if (tipoAresta == TipoAresta.MESMO_PESO) {
-                    mapa.addEdge(mapa.getVertex(j), mapa.getVertex(i), peso);
-                } else {
-                    int peso2 = gerarNumeroRandom(1, 15);
-                    mapa.addEdge(mapa.getVertex(j), mapa.getVertex(i), peso2);
-                }
-                a++;
-            }
-
-        }
+        GestorMapa.gerarArestas(preenchimento, tipoMapa, tipoAresta, mapa);
     }
 
     /**
@@ -186,18 +134,7 @@ public class Jogo {
         return (int) Math.round(mapa.size() * 0.20);
     }
 
-    /**
-     * retorna um valor aleatorio entre o min e o max
-     *
-     * @param min valor minimo
-     * @param max valor maximo
-     * @return um valor aleatorio entre o min e o max
-     */
-    public int gerarNumeroRandom(int min, int max) {
-        Random random = new Random();
-
-        return random.nextInt(max - min) + min;
-    }
+    
 
     /**
      * Metodo que retorna as localidades do mapa
@@ -286,7 +223,7 @@ public class Jogo {
      * Metodo responsavel por indicar quem começa a jogar
      */
     public void quemComeca() {
-        proximoJogador = gerarNumeroRandom(0, 1);
+        proximoJogador = GestorMapa.gerarNumeroRandom(0, 1);
 
     }
 
@@ -405,28 +342,6 @@ public class Jogo {
         }
     }
 
-    /**
-     * Metodo usado para garantir se o grafo esta conexo ou não
-     * @param tipoMapa
-     */
-    private void garantirConexao(TipoMapa tipoMapa) {
-
-        int i = 0;
-        while (i < mapa.getNumVertices() - 1) {
-            Localidade origem = (Localidade) mapa.getVertex(i);
-            Localidade destino = (Localidade) mapa.getVertex(i + 1);
-            int peso = gerarNumeroRandom(1, 15);
-            // Verifica se não há uma aresta entre os vértices
-            if (!mapa.hasEdge(origem, destino)) {
-                // Adiciona uma aresta entre os vértices
-                mapa.addEdge(origem, destino, peso);
-
-                if (tipoMapa == TipoMapa.BIDIERCIONAL) {
-                    mapa.addEdge(destino, origem, peso);
-                }
-            }
-            i++;
-        }
-    }
+    
 
 }
