@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 import org.json.simple.JSONObject;
 
 /**
- *
- * @author David Santos
+ * Classe responsavel por guardar dados de uma Localidade
+ * @author David Santos e Rafael Coronel
  */
 public class Localidade {
 

@@ -2,6 +2,10 @@ package api;
 
 import collections.implementations.ArrayUnorderedList;
 
+/**
+ * Classe responsavel pelo jogador do Jogo
+ * @author Rafael Coronel e David Santos
+ */
 public class Jogador {
 
     /*
@@ -113,6 +117,11 @@ public class Jogador {
         return bot;
     }
 
+    /**
+     * Metodo equals que compara dois jogadores atraves do id
+     * @param obj
+     * @return 
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

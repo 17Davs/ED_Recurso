@@ -5,20 +5,21 @@
 package api;
 
 /**
- *
- * @author David Santos
+ * Classe responsavel pelo tratamento das Bandeiras
+ * @author David Santos e Rafael Coronel
  */
 public class Bandeira extends Localidade {
 
-    /*
+    /**
        Variavel do tipo jogador para identificar qual jogador é dono da flag
      */
     private Jogador jogador;
 
-    /*
-    Construtor da classe Bandeira
     
-    @param jogador define qual jogador sera o dono da flag
+    /**
+     * Construtor da classe Bandeira
+     * @param 
+     * @param nome 
      */
     public Bandeira(int id, String nome) {
         super();
@@ -27,14 +28,14 @@ public class Bandeira extends Localidade {
         jogador = null;
     }
 
-    /*
+    /**
     Retorna o jogador que é dono da flag
      */
     public Jogador getJogador() {
         return jogador;
     }
 
-    /*
+    /**
     Cria o jogador que ira ser o dono de uma flag
     
     @param jogador jogador a ser criado

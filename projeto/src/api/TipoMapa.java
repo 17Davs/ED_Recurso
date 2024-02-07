@@ -5,8 +5,8 @@
 package api;
 
 /**
- *
- * @author David Santos
+ * Enumeração para determinar o tipo do mapa
+ * @author David Santos e Rafael Coronel
  */
 public enum TipoMapa {
     UNIDIRECIONAL, BIDIERCIONAL;

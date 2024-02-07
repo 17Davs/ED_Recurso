@@ -22,7 +22,7 @@ import java.util.Scanner;
  * permite criar mapas, importar mapas, visualizar o mapa, preparar jogadores e
  * bots, e iniciar o jogo.
  *
- * @author Rafael Coronel
+ * @author Rafael Coronel e David Santos
  */
 public class Menu {
 

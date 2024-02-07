@@ -5,8 +5,8 @@
 package api;
 
 /**
- *
- * @author David Santos
+ * Enumeração para limitar quais as estratégias cada bot pode seguir
+ * @author David Santos e Rafael Coronel
  */
 public enum TipoEstrategia {
     BFS,DFS,CAMINHO_MAIS_CURTO, MST;

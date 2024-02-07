@@ -5,8 +5,8 @@
 package api;
 
 /**
- *
- * @author David Santos
+ * Enumeração para definir os pesos de uma aresta quando escolhermos um mapa bidirecional
+ * @author David Santos e Rafael Coronel
  */
 public enum TipoAresta {
     MESMO_PESO, PESO_DIFERENTE;

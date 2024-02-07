@@ -9,35 +9,68 @@ import api.interfaces.IEstrategia;
 import java.util.Iterator;
 
 /**
- *
- * @author David Santos
+ * Classe abstrata que sera herdada pelos iteradores
+ * @author David Santos e Rafael Coronel
  */
 public abstract class Estrategia implements IEstrategia {
 
+    /**
+     * Variavel onde esta a bandeira do jogador
+     */
     private Bandeira partida;
+    
+    /**
+     * Variavel onde esta a bandeira do jogador adversario
+     */
     private Bandeira meta;
+    
+    /**
+     * Iterador utilizado para percorrer as localidades
+     */
     private Iterator<Localidade> itr;
 
+    /**
+     * Construtor da classe Estrategia
+     * @param partida Bandeira de partida do jogador
+     * @param meta Bandeira de destino do jogador adversário
+     * @param iterator Iterador utilizado para percorrer as localidades
+     */
     public Estrategia(Bandeira partida, Bandeira meta, Iterator<Localidade> iterator) {
         this.partida = partida;
         this.meta = meta;
         this.itr = iterator;
     }
 
+    /**
+     * Obtém a bandeira de partida do jogador
+     * @return Bandeira de partida
+     */
     @Override
     public Bandeira getPartida() {
         return partida;
     }
 
+    /**
+     * Obtém a bandeira do jogador adversário
+     * @return Bandeira do jogador adversário
+     */
     @Override
     public Bandeira getAdversaria() {
         return meta;
     }
 
+     /**
+     * Obtém o iterador utilizado para percorrer as localidades
+     * @return Iterador das localidades
+     */
     public Iterator<Localidade> getItr() {
         return itr;
     }
 
+    /**
+     * Define o iterador utilizado para percorrer as localidades
+     * @param itr Iterador das localidades
+     */
     public void setItr(Iterator<Localidade> itr) {
         this.itr = itr;
     }

@@ -5,7 +5,7 @@ import api.interfaces.IEstrategia;
 /**
  * Classe que representa BOT
  *
- * @author David Santos
+ * @author David Santos e Rafael Coronel
  */
 public class Bot {
 
@@ -142,8 +142,4 @@ public class Bot {
         }
     }
 
-//    @Override
-//    public int compareTo(Bot o) {
-//        return Integer.compare(this.getId(), o.getId());
-//    }
 }

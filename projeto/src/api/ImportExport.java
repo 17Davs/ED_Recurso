@@ -14,11 +14,16 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 /**
- *
- * @author David Santos
+ * Classe responsavel por todo o manuseo dos ficheiro JSON
+ * @author David Santos e Rafael Coronel
  */
 public class ImportExport {
 
+    /**
+     * Guarda um mapa num ficheiro JSON
+     * @param filePath nome do mapa a ser guardado
+     * @param mapa mapa a ser guardado
+     */
     public static void exportToJSON(String filePath, Mapa<Localidade> mapa) {
         double[][] adjMatrix = mapa.getAdjMatrix();
         int numVertices = mapa.getNumVertices();
@@ -57,6 +62,11 @@ public class ImportExport {
         }
     }
 
+    /**
+     * Importa um mapa guardado num ficheiro JSON
+     * @param filePath nome do mapa a ser importado
+     * @return Retorna o mapa importado
+     */
     public static Mapa<Localidade> importJSON(String filePath) {
         JSONParser jsonParser = new JSONParser();
 
@@ -96,6 +106,11 @@ public class ImportExport {
         return new Mapa<>();
     }
 
+    /**
+     * Metodo responsavel por mostrar as caracteristicas do mapa atual
+     * @param mapa mapa atual
+     * @return retorna as caracteristicas do mapa
+     */
     public static String showMapa(Mapa<Localidade> mapa) {
         int numVertices = mapa.getNumVertices();
         double[][] adjMatrix = mapa.getAdjMatrix();
@@ -113,6 +128,11 @@ public class ImportExport {
         return string;
     }
 
+    /**
+     * Metodo que mostra um mapa a partir de um ficheiro JSON
+     * @param filePath nome do mapaa ser mostrado
+     * @return retorna o mapa
+     */
     public static String showMapaFromJson(String filePath) {
         Mapa<Localidade> mapa = importJSON(filePath);
         int numVertices = mapa.getNumVertices();
