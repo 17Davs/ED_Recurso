@@ -46,10 +46,12 @@ public class Menu {
 
             switch (option) {
                 case 1:
+                    jogo = new Jogo();
                     MenuCriarMapa();
                     MenuInial();
                     break;
                 case 2:
+                    jogo = new Jogo();
                     mostrarMapa();
                     break;
                 case 0:
@@ -81,9 +83,9 @@ public class Menu {
             System.out.print("Introduza o número de localizaçoes [Mínimo 10]: ");
             quantidadeLocalizacoes = scanner.nextInt();
         } while (quantidadeLocalizacoes < 10);
-        
+
         jogo.inicializarMapa(quantidadeLocalizacoes);
-        
+
         //pedir nome das localizações
         for (int i = 0; i < quantidadeLocalizacoes; i++) {
             System.out.print("Introduza o nome da localizaçao " + (i + 1) + ": ");
@@ -166,7 +168,8 @@ public class Menu {
             if (opcao == 1) {
                 System.out.print("Indica o nome do mapa: ");
                 String nomeMapa = scanner.next();
-                jogo.ExportarMapa(nomeMapa);
+                String currentWorkingDir = System.getProperty("user.dir");
+                jogo.exportarMapa(currentWorkingDir + "/src/Files/" + nomeMapa + ".json");
                 System.out.println();
             }
         } while (opcao < 1 || opcao > 2);
@@ -289,6 +292,7 @@ public class Menu {
             opcao = scanner.nextInt();
 
             if (opcao >= 1 && opcao <= localidades.size()) {
+
                 jogador.setBase(jogo.definirBandeira(localidades.get(opcao - 1)));
             } else {
                 System.out.println("Opção inválida. Tente novamente.");
@@ -351,12 +355,16 @@ public class Menu {
         System.out.println("║     JOGO Capture the Flag Iniciado    ║");
         System.out.println("╚═════════════════════════════════════════════════╝");
 
-        
-        
-        
-        
-        
-        
+        jogo.iniciarJogo();
+
+        System.out.println("╔═════════════════════════════════════════════════╗");
+        System.out.println("║     JOGO Capture the Flag Terminado   ║");
+        System.out.println("╚═════════════════════════════════════════════════╝");
+
+    }
+
+    public static void main(String[] args) {
+        Menu.mostrarMenuJogo();
     }
 
 }

@@ -11,6 +11,7 @@ import java.util.Random;
 
 /**
  * Aqui vamos implementar todos os metodos a serem usados na classe menu
+ *
  * @author David Santos
  */
 public class Jogo {
@@ -18,33 +19,32 @@ public class Jogo {
     private Mapa<Localidade> mapa;
     private ArrayUnorderedList<Jogador> jogadores;
     private int proximoJogador;
-    
-    
-    
+    private boolean vitoria = false;
+
     public Jogo() {
         proximoJogador = 0;
         jogadores = new ArrayUnorderedList<>(2);
         mapa = null;
     }
 
-    public void inicializarMapa(int capacidade){
+    public void inicializarMapa(int capacidade) {
         mapa = new Mapa<>(capacidade);
     }
-    
+
     public void importarMapa(String nomeMapa) {
         mapa = ImportExport.importJSON(nomeMapa);
     }
 
-    public void ExportarMapa(String nomeMapa) {
+    public void exportarMapa(String nomeMapa) {
         ImportExport.exportToJSON(nomeMapa, mapa);
     }
 
     public void mostrarMapa() {
         ImportExport.showMapa(mapa);
     }
-    
+
     public void mostrarMapaFromJson(String filePath) {
-        ImportExport.showMapa(filePath);
+        ImportExport.showMapaFromJson(filePath);
     }
 
     public void gerarArestas(int quantidadeArestas, TipoMapa tipoMapa) {
@@ -117,9 +117,7 @@ public class Jogo {
     }
 
     public Bandeira definirBandeira(Localidade localidade) {
-        Bandeira bandeira = new Bandeira(localidade.getId(), localidade.getNome());
-        localidade = bandeira;
-        return (Bandeira) localidade;
+       return mapa.definirBandeira(localidade);
     }
 
     public void adicionarJogador(Jogador jogador) throws UnsupportedOperationException {
@@ -132,7 +130,7 @@ public class Jogo {
 
     public void adicionarBot(Jogador jogador, Bot bot, TipoEstrategia tipo) {
         //associar bot ao jogador e associar estrategia ao bot
-        Bandeira inimiga=null;
+        Bandeira inimiga = null;
         try {
             if (jogador.equals(jogadores.first())) {
                 inimiga = jogadores.last().getBase();
@@ -141,7 +139,7 @@ public class Jogo {
             }
         } catch (EmptyCollectionException e) {
         }
-        
+
         IEstrategia estrategia;
         switch (tipo) {
             case BFS:
@@ -159,15 +157,103 @@ public class Jogo {
         }
         bot.setLocalAtual(jogador.getBase());
         bot.setEstrategia(estrategia);
-        jogador.adicionarBot(bot);     
+        jogador.adicionarBot(bot);
 
     }
-    
-    
-    
-    
 
-    
+    public void quemComeca() {
+        proximoJogador = gerarNumeroRandom(0, 1);
 
-    
+    }
+
+    public void atualizarProxJogador() {
+        proximoJogador = (proximoJogador + 1) % jogadores.size();
+    }
+
+    public void iniciarJogo() {
+        quemComeca();
+
+        while (!vitoria) {
+            jogarRonda();
+        }
+    }
+
+    public void jogarRonda() {
+        if (vitoria) {
+            throw new UnsupportedOperationException("Jogo já terminou!");
+        }
+
+        Jogador jogadorAtual = jogadores.get(proximoJogador);
+        Bot botAtual = jogadorAtual.getNextBot();
+        // Localidade localidadeAnterior = botAtual.getLocalAtual();
+        Jogador adversario = jogadores.get((proximoJogador + 1) % 2);
+
+        botAtual.movimentar();
+        verificarVitoria(jogadorAtual, botAtual, adversario);
+        atualizarProxJogador();
+    }
+
+    private void verificarVitoria(Jogador jogadorAtual, Bot botAtual, Jogador adversario) {
+        //verificar vitoria
+        /*
+         O jogo termina quando a bandeira de um jogador chega à base da equipa adversária.
+         */
+        if (botAtual.getLocalAtual().equals(jogadorAtual.getBase()) && botAtual.getBandeiraAdversaria() != null) {
+            System.out.println("===========================================");
+            System.out.println("|    O jogador " + jogadorAtual.getId() + " venceu!   |");
+            System.out.println("|   Bot " + botAtual.getId() + " devolveu a bandeira adversária  |");
+            System.out.println("|    para a sua base em " + botAtual.getLocalAtual().getNome() + "   |");
+            System.out.println("===========================================");
+            vitoria = true;
+        } else {
+            verificarRegras(jogadorAtual, botAtual, adversario);
+            vitoria = false; //confirmar
+        }
+    }
+
+    private void verificarRegras(Jogador jogadorAtual, Bot botAtual, Jogador adversario) {
+        if (botAtual.getLocalAtual()
+                .equals(adversario.getBase())) {
+            //se o bot chegou na bandeira adversaria
+            //capturar a bandeira e gerar caminho de volta da sua estrategia
+            botAtual.capturarBandeiraAdversaria(adversario.getBase(), mapa);
+            //sinalizar que já capturou
+            System.out.println("«« Jogador " + jogadorAtual.getId() + "---> Bot " + botAtual.getId() + " capturou a bandeira adversária em " + botAtual.getBandeiraAdversaria().getNome() + " »»");
+
+        } else {
+            /**
+             * Cada localização pode acolher mais do que um bot. Se ao entrar
+             * uma localização existir um bot adversário com a bandeira da sua
+             * equipa, esta deverá voltar para a sua base. No entanto, se um bot
+             * com a bandeira entra numa localização, a bandeira permanece na
+             * posse do bot. Se coincidirem as duas bandeiras na mesma
+             * localização, ambas voltam para a base
+             */
+            System.out.println("|| Jogador " + jogadorAtual.getId() + "---> Bot " + botAtual.getId() + " moveu-se para a localidade " + botAtual.getLocalAtual().getNome());
+
+            ArrayUnorderedList<Bot> botsAdversarios = adversario.getBots();
+
+            //percorrer lista de bots adversarios para verificar
+            for (int i = 0; i < botsAdversarios.size(); i++) {
+                Bot botAdversario = botsAdversarios.get(i);
+                //se estiver no mesmo local que o bot atual
+                if (botAdversario.getLocalAtual().equals(botAtual.getLocalAtual())) {
+                    //se tiver com a bandeira do jogador atual
+                    if (botAdversario.getBandeiraAdversaria() != null && botAdversario.getBandeiraAdversaria().equals(jogadorAtual.getBase())) {
+                        //esta devera voltar à sua base (ser perdida) e reconfigurar estrategia para ir buscar novamente
+                        botAdversario.removerBandeira(mapa);
+                        System.out.println("!!!! O Bot adversário " + botAdversario.getId() + " presente na mesma localidade perdeu a a bandeira capturada !!!!");
+
+                        //se o botAtual tambem tem bandeira capturada, ambas são perdidas
+                        if (botAtual.getBandeiraAdversaria() != null) {
+                            //remover e reconfigurar estrategia
+                            botAtual.removerBandeira(mapa);
+                            System.out.println("!!!! O Bot " + botAdversario.getId() + "(atual) também perdeu a bandeira capturada !!!!");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }

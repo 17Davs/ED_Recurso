@@ -58,7 +58,7 @@ public abstract class Estrategia implements IEstrategia {
             Localidade localidade = itr.next();
 
             //em caso de ser a primeira movimentação
-            if (localidade.equals((Localidade) partida)) {
+            if (localidade.equals( partida)) {
                 if (itr.hasNext()) {
                     localidade = itr.next();
                 }
