@@ -10,17 +10,27 @@ import collections.implementations.ArrayUnorderedList;
 import java.util.Random;
 
 /**
- *
+ * Aqui vamos implementar todos os metodos a serem usados na classe menu
  * @author David Santos
  */
 public class Jogo {
 
     private Mapa<Localidade> mapa;
     private ArrayUnorderedList<Jogador> jogadores;
-
+    private int proximoJogador;
+    
+    
+    
     public Jogo() {
+        proximoJogador = 0;
+        jogadores = new ArrayUnorderedList<>(2);
+        mapa = null;
     }
 
+    public void inicializarMapa(int capacidade){
+        mapa = new Mapa<>(capacidade);
+    }
+    
     public void importarMapa(String nomeMapa) {
         mapa = ImportExport.importJSON(nomeMapa);
     }
@@ -31,6 +41,10 @@ public class Jogo {
 
     public void mostrarMapa() {
         ImportExport.showMapa(mapa);
+    }
+    
+    public void mostrarMapaFromJson(String filePath) {
+        ImportExport.showMapa(filePath);
     }
 
     public void gerarArestas(int quantidadeArestas, TipoMapa tipoMapa) {
@@ -143,9 +157,17 @@ public class Jogo {
                 estrategia = new MST(jogador.getBase(), inimiga, mapa);
                 break;
         }
-        
+        bot.setLocalAtual(jogador.getBase());
         bot.setEstrategia(estrategia);
         jogador.adicionarBot(bot);     
 
     }
+    
+    
+    
+    
+
+    
+
+    
 }

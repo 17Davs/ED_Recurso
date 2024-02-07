@@ -37,7 +37,7 @@ public class Menu {
             System.out.println("| Seleciona uma opção:                 |");
             System.out.println("|                                      |");
             System.out.println("| 01. Criar mapa                       |");
-            System.out.println("| 02. Importar mapa                    |");
+            System.out.println("| 02. Mostrar/Importar mapa            |");
             System.out.println("| 0. Sair                              |");
             System.out.println("+--------------------------------------+");
             System.out.println("\n");
@@ -50,8 +50,7 @@ public class Menu {
                     MenuInial();
                     break;
                 case 2:
-                    ImportarMapa();
-                    MenuInial();
+                    mostrarMapa();
                     break;
                 case 0:
                     System.out.println("saindo do jogo...");
@@ -66,10 +65,8 @@ public class Menu {
 
     }
 
-    private static void ImportarMapa() {
-        System.out.println("Importação de um mapa!");
-        System.out.print("Introduza o nome do mapa:");
-        String nomeMapa = scanner.next();
+    private static void ImportarMapa(String nomeMapa) {
+        System.out.println("Importando mapa + " + nomeMapa + "!");
         jogo.importarMapa(nomeMapa);
     }
 
@@ -84,7 +81,9 @@ public class Menu {
             System.out.print("Introduza o número de localizaçoes [Mínimo 10]: ");
             quantidadeLocalizacoes = scanner.nextInt();
         } while (quantidadeLocalizacoes < 10);
-
+        
+        jogo.inicializarMapa(quantidadeLocalizacoes);
+        
         //pedir nome das localizações
         for (int i = 0; i < quantidadeLocalizacoes; i++) {
             System.out.print("Introduza o nome da localizaçao " + (i + 1) + ": ");
@@ -194,10 +193,43 @@ public class Menu {
 
                 case 1:
                     MenuPreparacao();
+                    oJogo();
                     break;
 
                 case 2:
                     jogo.mostrarMapa();
+                    break;
+            }
+
+        } while (opcao != 0);
+    }
+
+    private static void mostrarMapa() {
+        int opcao;
+        String currentWorkingDir = System.getProperty("user.dir");
+        System.out.print("Introduza o nome do mapa a visualizar: ");
+        String nMapa = scanner.next();
+        jogo.mostrarMapaFromJson(currentWorkingDir + "/src/Files/" + nMapa + ".json");
+
+        System.out.println("Deseja importar esse mapa ou nao :");
+        do {
+            System.out.println();
+            System.out.println("=========================");
+            System.out.println("      1. SIM             ");//por retirar
+            System.out.println("      2. NAO             ");
+            System.out.println("=========================");
+
+            System.out.println("Introduza sua opcao: ");
+            opcao = scanner.nextInt();
+
+            switch (opcao) {
+
+                case 1:
+                    ImportarMapa(currentWorkingDir + "/src/Files/" + nMapa + ".json");
+                    MenuInial();
+                    break;
+                case 2:
+                    mostrarMenuJogo();
                     break;
             }
 
@@ -209,8 +241,21 @@ public class Menu {
         Jogador jogodor1 = criarJogador();
         Jogador jogodor2 = criarJogador();
 
-        
         //bots
+        padronizarBots(jogodor1);
+        padronizarBots(jogodor2);
+    }
+
+    private static void padronizarBots(Jogador jogador) {
+        System.out.println("===========================================");
+        System.out.println("|         Menu de Padronização de Bots    |");
+        System.out.println("===========================================");
+        System.out.println("| Jogador: " + jogador.getId());
+        System.out.println("-------------------------------------------");
+
+        for (int i = 0; i < jogador.getMaxBots(); i++) {
+            criarBot(jogador);
+        }
     }
 
     private static Jogador criarJogador() {
@@ -260,12 +305,15 @@ public class Menu {
         Bot bot = new Bot();
         int opcao;
         do {
-            System.out.println("Bot numero " + bot.getId() + " para o jogador " + jogador.getBots());
-            System.out.println("======= Estrátegia para o bot " + bot.getId() + " =======");
-            System.out.println("      1. Travessia por largura (BFS)       ");
-            System.out.println("    2. Travessia por profundidade (DFS)    ");
-            System.out.println("            3. Shortest Path               ");
-            System.out.println("        4. Arvore geradora Minima          ");
+            System.out.println("===========================================");
+            System.out.println("| Estratégia para o bot " + bot.getId() + "{Jogador " + jogador.getId() + "]:");
+            System.out.println("-------------------------------------------");
+            System.out.println("| Opções de Estratégia:                 |");
+            System.out.println("|   1. Travessia por largura (BFS)        |");
+            System.out.println("|   2. Travessia por profundidade (DFS)   |");
+            System.out.println("|   3. Shortest Path                      |");
+            System.out.println("|   4. Árvore geradora Mínima             |");
+            System.out.println("-------------------------------------------");
             System.out.println("===========================================");
 
             System.out.println("Introduza sua opcao: ");
@@ -276,7 +324,6 @@ public class Menu {
             }
         } while (opcao < 1 || opcao > 4);
 
-        Bandeira bandeira = jogador.getBase();
         switch (opcao) {
             case 1:
                 System.out.println("Foi escolhido a travessia BFS para o bot " + bot.getId());
@@ -295,7 +342,21 @@ public class Menu {
                 System.out.println("Foi escolhido a travessia Árvore geradora de custo minimo para o bot" + bot.getId());
                 jogo.adicionarBot(jogador, bot, TipoEstrategia.MST);
                 break;
-        } 
+        }
+    }
+
+    private static void oJogo() {
+
+        System.out.println("╔═════════════════════════════════════════════════╗");
+        System.out.println("║     JOGO Capture the Flag Iniciado    ║");
+        System.out.println("╚═════════════════════════════════════════════════╝");
+
+        
+        
+        
+        
+        
+        
     }
 
 }
