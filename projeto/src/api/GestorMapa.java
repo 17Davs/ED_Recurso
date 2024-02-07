@@ -40,10 +40,10 @@ public class GestorMapa {
                 j = gerarNumeroRandom(0, mapa.getNumVertices() - 1);
             } while (j == i);
 
-            //if (!mapa.isAdjacent(i, j)) {
+            
             mapa.addEdge(mapa.getVertex(i), mapa.getVertex(j), peso);
             a++;
-            //}
+            
         }
     }
 
@@ -74,17 +74,16 @@ public class GestorMapa {
             do {
                 j = gerarNumeroRandom(0, mapa.getNumVertices() - 1);
             } while (j == i);
-            if (!mapa.isAdjacent(i, j)) {
-                mapa.addEdge(mapa.getVertex(i), mapa.getVertex(j), peso);
+            mapa.addEdge(mapa.getVertex(i), mapa.getVertex(j), peso);
 
-                if (tipoAresta == TipoAresta.MESMO_PESO) {
-                    mapa.addEdge(mapa.getVertex(j), mapa.getVertex(i), peso);
-                } else {
-                    int peso2 = gerarNumeroRandom(1, 16);
-                    mapa.addEdge(mapa.getVertex(j), mapa.getVertex(i), peso2);
-                }
-                a++;
+            if (tipoAresta == TipoAresta.MESMO_PESO) {
+                mapa.addEdge(mapa.getVertex(j), mapa.getVertex(i), peso);
+            } else {
+                int peso2 = gerarNumeroRandom(1, 16);
+                mapa.addEdge(mapa.getVertex(j), mapa.getVertex(i), peso2);
             }
+            a++;
+            
 
         }
     }
@@ -127,7 +126,6 @@ public class GestorMapa {
         }
     }
 
-    
     /**
      * Metodo responsavel por adicionar um vértice ao mapa
      *
@@ -138,5 +136,5 @@ public class GestorMapa {
         Localidade localidade = new Localidade(nome);
         mapa.addVertex(localidade);
     }
-    
+
 }
