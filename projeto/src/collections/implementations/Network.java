@@ -483,11 +483,8 @@ public class Network<T> implements NetworkADT<T> {
     public void addEdge(int index1, int index2, double weight) {
         if (indexIsValid(index1) && indexIsValid(index2)) {
             adjMatrix[index1][index2] = weight;
-            adjMatrix[index2][index1] = weight;
+           // adjMatrix[index2][index1] = weight;
         } else {
-            System.out.println(index1 + " " + index2);
-            
-            
             throw new IllegalArgumentException("Vértices inválidos: ");
         }
 

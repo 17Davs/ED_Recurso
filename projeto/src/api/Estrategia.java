@@ -17,11 +17,13 @@ public abstract class Estrategia implements IEstrategia {
     private Bandeira partida;
     private Bandeira meta;
     private Iterator<Localidade> itr;
+    private boolean primeiroMovimento;
 
     public Estrategia(Bandeira partida, Bandeira meta, Iterator<Localidade> iterator) {
         this.partida = partida;
         this.meta = meta;
         this.itr = iterator;
+        primeiroMovimento =true;
     }
 
     @Override
@@ -40,6 +42,15 @@ public abstract class Estrategia implements IEstrategia {
 
     public void setItr(Iterator<Localidade> itr) {
         this.itr = itr;
+        primeiroMovimento=true;
+    }
+
+    public boolean isPrimeiroMovimento() {
+        return primeiroMovimento;
+    }
+
+    public void setPrimeiroMovimento(boolean primeiroMovimento) {
+        this.primeiroMovimento = primeiroMovimento;
     }
 
     
@@ -56,11 +67,12 @@ public abstract class Estrategia implements IEstrategia {
 
         if (itr.hasNext()) {
             Localidade localidade = itr.next();
-
+     
             //em caso de ser a primeira movimentação
-            if (localidade.equals( partida)) {
+            if (primeiroMovimento) {
                 if (itr.hasNext()) {
                     localidade = itr.next();
+                    primeiroMovimento=false;
                 }
 
             }

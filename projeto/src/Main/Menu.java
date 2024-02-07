@@ -260,6 +260,7 @@ public class Menu {
                 case 1:
                     ImportarMapa(currentWorkingDir + "/src/Files/" + nMapa + ".json");
                     MenuInial();
+                    opcao = 0;
                     break;
                 case 2:
                     mostrarMenuJogo();

@@ -7,13 +7,11 @@ package collections.implementations;
 import collections.exceptions.EmptyCollectionException;
 import collections.interfaces.HeapADT;
 
-
-
 /**
  * ArrayHeap provides an array implementation of a minheap.
  *
  */
-    public class ArrayHeap<T> extends ArrayBinaryTree<T>
+public class ArrayHeap<T> extends ArrayBinaryTree<T>
         implements HeapADT<T> {
 
     public ArrayHeap() {
@@ -23,7 +21,7 @@ import collections.interfaces.HeapADT;
     private void expandCapacity() {
 
         // Crie um novo array com a capacidade expandida
-        T[] newTree = (T[]) new Object [tree.length * 3];
+        T[] newTree = (T[]) new Object[tree.length * 3];
 
         // Copie os elementos do array antigo para o novo array
         for (int i = 0; i < tree.length; i++) {
@@ -116,6 +114,7 @@ import collections.interfaces.HeapADT;
             node = next;
             left = 2 * node + 1;
             right = 2 * (node + 1);
+
             if ((tree[left] == null) && (tree[right] == null)) {
                 next = count;
             } else if (tree[left] == null) {
@@ -127,6 +126,7 @@ import collections.interfaces.HeapADT;
             } else {
                 next = right;
             }
+
         }
         tree[node] = temp;
     }
@@ -137,5 +137,9 @@ import collections.interfaces.HeapADT;
             throw new EmptyCollectionException("Empty Heap");
         }
         return tree[0];
+    }
+
+    private boolean indexIsValid(int index) {
+        return index >= 0 && index < tree.length;
     }
 }

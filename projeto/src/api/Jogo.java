@@ -8,6 +8,8 @@ import api.interfaces.IEstrategia;
 import collections.exceptions.EmptyCollectionException;
 import collections.implementations.ArrayUnorderedList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Aqui vamos implementar todos os metodos a serem usados na classe menu
@@ -55,14 +57,17 @@ public class Jogo {
 
         int quantidadeLocalizacoes = mapa.getNumVertices();
         int quantidadeArestas = (int) Math.round(((quantidadeLocalizacoes * (quantidadeLocalizacoes - 1)) * ((double) preenchimento / 100)));
-        garantirConexao();
+        garantirConexao(tipoMapa);
 
         int a = 0;
         quantidadeArestas -= mapa.getNumVertices() - 1;
         while (a < quantidadeArestas) {
             int peso = gerarNumeroRandom(1, 15);
             int i = gerarNumeroRandom(0, mapa.getNumVertices() - 1);
-            int j = gerarNumeroRandom(0, mapa.getNumVertices() - 1);
+            int j;
+            do {
+                j = gerarNumeroRandom(0, mapa.getNumVertices() - 1);
+            } while (j == i);
 
             //if (!mapa.isAdjacent(i, j)) {
             mapa.addEdge(mapa.getVertex(i), mapa.getVertex(j), peso);
@@ -79,15 +84,17 @@ public class Jogo {
         }
         int quantidadeLocalizacoes = mapa.getNumVertices();
         int quantidadeArestas = (int) Math.round(((quantidadeLocalizacoes * (quantidadeLocalizacoes - 1)) * ((double) preenchimento / 100)));
-        garantirConexao();
+        garantirConexao(tipoMapa);
 
         int a = 0;
         quantidadeArestas -= mapa.getNumVertices() - 1;
         while (a < quantidadeArestas) {
             int peso = gerarNumeroRandom(1, 15);
             int i = gerarNumeroRandom(0, mapa.getNumVertices() - 1);
-            int j = gerarNumeroRandom(0, mapa.getNumVertices() - 1);
-
+            int j;
+            do {
+                j = gerarNumeroRandom(0, mapa.getNumVertices() - 1);
+            } while (j == i);
             if (!mapa.isAdjacent(i, j)) {
                 mapa.addEdge(mapa.getVertex(i), mapa.getVertex(j), peso);
 
@@ -196,17 +203,21 @@ public class Jogo {
     }
 
     public void jogarRonda() {
-        if (vitoria) {
-            throw new UnsupportedOperationException("Jogo já terminou!");
+        
+            if (vitoria) {
+                throw new UnsupportedOperationException("Jogo já terminou!");
+            }
+            
+            Jogador jogadorAtual = jogadores.get(proximoJogador);
+            Bot botAtual = jogadorAtual.getNextBot();
+            Jogador adversario = jogadores.get((proximoJogador + 1) % 2);
+          try {  
+            botAtual.movimentar();
+            verificarVitoria(jogadorAtual, botAtual, adversario); // Verifica a vitória antes de atualizar o próximo jogador
+            atualizarProxJogador();
+        } catch (FimCaminhoException ex) {
+            System.out.println("Bot " + botAtual.getId() + " sem caminho --------------------------------------------");
         }
-
-        Jogador jogadorAtual = jogadores.get(proximoJogador);
-        Bot botAtual = jogadorAtual.getNextBot();
-        Jogador adversario = jogadores.get((proximoJogador + 1) % 2);
-
-        botAtual.movimentar();
-        verificarVitoria(jogadorAtual, botAtual, adversario); // Verifica a vitória antes de atualizar o próximo jogador
-        atualizarProxJogador();
     }
 
     private void verificarVitoria(Jogador jogadorAtual, Bot botAtual, Jogador adversario) {
@@ -270,15 +281,20 @@ public class Jogo {
         }
     }
 
-    private void garantirConexao() {
+    private void garantirConexao(TipoMapa tipoMapa) {
         int i = 0;
         while (i < mapa.getNumVertices() - 1) {
             Localidade origem = (Localidade) mapa.getVertex(i);
             Localidade destino = (Localidade) mapa.getVertex(i + 1);
+            int peso = gerarNumeroRandom(1, 15);
             // Verifica se não há uma aresta entre os vértices
             if (!mapa.hasEdge(origem, destino)) {
                 // Adiciona uma aresta entre os vértices
-                mapa.addEdge(origem, destino);
+                mapa.addEdge(origem, destino, peso);
+                
+                if(tipoMapa==TipoMapa.BIDIERCIONAL){
+                     mapa.addEdge(destino, origem, peso);
+                }
             }
             i++;
         }

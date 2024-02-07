@@ -98,9 +98,7 @@ public class Bot {
         this.bandeiraAdversaria = null;
         //atualizaar
         this.estrategia.atualizarCaminho(localAtual, mapa);
-        //executa caso foi gerado o caminho de volta para não repetir a Bandeira 
-        // (saltar o startVertex)
-        movimentar();
+
     }
 
     /**
@@ -113,9 +111,7 @@ public class Bot {
         this.bandeiraAdversaria = bandeiraAdversaria;
         //gerar caminho de volta
         this.estrategia.gerarCaminhoDeVolta(mapa);
-        //executa caso foi gerado o caminho de volta para não repetir a Bandeira  
-        // (saltar o startVertex)
-        movimentar();
+
     }
 
     /**
@@ -130,16 +126,15 @@ public class Bot {
     /**
      * Movimentar bot
      */
-    public void movimentar() {
+    public void movimentar() throws FimCaminhoException{
 
         if (estrategia == null) {
             throw new UnsupportedOperationException("Estrategia não configurada para bot " + this.id);
         }
-        try {
+       
             localAtual = estrategia.executarMovimento();
 
-        } catch (FimCaminhoException ex) {
-        }
+        
     }
 
 //    @Override
