@@ -19,25 +19,6 @@ import org.json.simple.parser.ParseException;
  */
 public class ImportExport {
 
-    private int numVertices;
-    private int numArestas;
-
-    public int getNumArestas() {
-        return numArestas;
-    }
-
-    public int getNumVertices() {
-        return numVertices;
-    }
-
-    public void setNumArestas(int numArestas) {
-        this.numArestas = numArestas;
-    }
-
-    public void setNumVertices(int numVertices) {
-        this.numVertices = numVertices;
-    }
-
     public static void exportToJSON(String filePath, Mapa<Localidade> mapa) {
         double[][] adjMatrix = mapa.getAdjMatrix();
         int numVertices = mapa.getNumVertices();
@@ -61,14 +42,14 @@ public class ImportExport {
                     JSONObject arestaJSON = new JSONObject();
                     arestaJSON.put("Origem", i);
                     arestaJSON.put("Destino", j);
-                    arestaJSON.put("Peso", adjMatrix[i][j]);
+                    arestaJSON.put("Peso", (int) adjMatrix[i][j]);
                     arestasJSON.add(arestaJSON);
                 }
             }
         }
         mapaJSON.put("Arestas", arestasJSON);
 
-        try (FileWriter file = new FileWriter(filePath)) {
+        try ( FileWriter file = new FileWriter(filePath)) {
             file.write(mapaJSON.toJSONString());
             file.close();
             System.out.println("Mapa exportado com sucesso para: " + filePath);
@@ -79,7 +60,7 @@ public class ImportExport {
     public static Mapa<Localidade> importJSON(String filePath) {
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader(filePath)) {
+        try ( FileReader reader = new FileReader(filePath)) {
             JSONObject jsonObject = null;
             try {
                 jsonObject = (JSONObject) jsonParser.parse(reader);
@@ -120,19 +101,19 @@ public class ImportExport {
         double[][] adjMatrix = mapa.getAdjMatrix();
 
         String string = "";
-        string += "mapa:\n";
+        string += "Mapa:\n";
 
         for (int i = 0; i < numVertices; i++) {
             for (int j = 0; j < numVertices; j++) {
                 if (adjMatrix[i][j] != 0) {
-                    string += "Localidade " + i + " está conectada a Localidade " + j + " com peso " + adjMatrix[i][j] + "\n";
+                    string += "Localidade " + mapa.getVertex(i) + " está conectada a Localidade " + mapa.getVertex(j) + " com peso " + adjMatrix[i][j] + "\n";
                 }
             }
         }
         return string;
     }
 
-    public static String showMapa(String filePath) {
+    public static String showMapaFromJson(String filePath) {
         Mapa<Localidade> mapa = importJSON(filePath);
         int numVertices = mapa.getNumVertices();
         double[][] adjMatrix = mapa.getAdjMatrix();
@@ -143,7 +124,7 @@ public class ImportExport {
         for (int i = 0; i < numVertices; i++) {
             for (int j = 0; j < numVertices; j++) {
                 if (adjMatrix[i][j] != 0) {
-                    string += "Localidade " + i + " está conectada a Localidade " + j + " com peso " + adjMatrix[i][j] + "\n";
+                    string += "Localidade " + mapa.getVertex(i) + " está conectada a Localidade " + mapa.getVertex(j) + " com peso " + adjMatrix[i][j] + "\n";
                 }
             }
         }

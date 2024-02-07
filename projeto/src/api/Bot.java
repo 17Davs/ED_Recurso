@@ -36,7 +36,7 @@ public class Bot {
 
     /**
      * Construtor da classe Bot
-    */
+     */
     public Bot() {
         id = ++proximoID;
         this.estrategia = null;
@@ -90,19 +90,32 @@ public class Bot {
     }
 
     /**
-     * Remove a bandeira adversaria capturada
+     * Remove a bandeira adversaria capturada e atualiza o caminho
      *
+     * @param mapa
      */
-    public void removerBandeira() {
+    public void removerBandeira(Mapa<Localidade> mapa) {
         this.bandeiraAdversaria = null;
+        //atualizaar
+        this.estrategia.atualizarCaminho(localAtual, mapa);
+        //executa caso foi gerado o caminho de volta para não repetir a Bandeira 
+        // (saltar o startVertex)
+        movimentar();
     }
 
     /**
      * Define a bandeira adversaria capturada
      *
+     * @param bandeiraAdversaria
+     * @param mapa
      */
-    public void setBandeiraAdversaria(Bandeira bandeiraAdversaria) {
+    public void capturarBandeiraAdversaria(Bandeira bandeiraAdversaria, Mapa<Localidade> mapa) {
         this.bandeiraAdversaria = bandeiraAdversaria;
+        //gerar caminho de volta
+        this.estrategia.gerarCaminhoDeVolta(mapa);
+        //executa caso foi gerado o caminho de volta para não repetir a Bandeira  
+        // (saltar o startVertex)
+        movimentar();
     }
 
     /**
@@ -120,7 +133,7 @@ public class Bot {
     public void movimentar() {
 
         if (estrategia == null) {
-            throw new NullPointerException("Estrategia não configurada para bot " + this.id);
+            throw new UnsupportedOperationException("Estrategia não configurada para bot " + this.id);
         }
         try {
             localAtual = estrategia.executarMovimento();
@@ -133,5 +146,4 @@ public class Bot {
 //    public int compareTo(Bot o) {
 //        return Integer.compare(this.getId(), o.getId());
 //    }
-
 }

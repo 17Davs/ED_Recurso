@@ -93,7 +93,7 @@ public class Localidade {
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (!(obj instanceof Localidade)) {
             return false;
         }
         final Localidade other = (Localidade) obj;

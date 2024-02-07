@@ -485,6 +485,7 @@ public class Network<T> implements NetworkADT<T> {
             adjMatrix[index1][index2] = weight;
             adjMatrix[index2][index1] = weight;
         } else {
+            System.out.println(index1 + " " + index2);
             throw new IllegalArgumentException("Vértices inválidos: ");
         }
 
