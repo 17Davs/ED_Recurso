@@ -9,7 +9,7 @@ import java.util.Iterator;
 /**
  * GraphADT defines the interface to a graph data structure.
  *
- * @param <T>
+ * @param <T> tipo
  */
 public interface GraphADT<T> {
 

@@ -4,11 +4,9 @@
  */
 package api;
 
-import java.time.LocalDateTime;
-import org.json.simple.JSONObject;
-
 /**
  * Classe responsavel por guardar dados de uma Localidade
+ *
  * @author David Santos e Rafael Coronel
  */
 public class Localidade {
@@ -32,7 +30,7 @@ public class Localidade {
     /**
      * Construtor que cria uma localidade com um nome especificado.
      *
-     * @param nome
+     * @param nome nome
      */
     public Localidade(String nome) {
         this.id = ++proximoID;
@@ -47,7 +45,7 @@ public class Localidade {
     /**
      * Metodo que retorna o ID da localidade.
      *
-     * @return id
+     * @return id id
      */
     public int getId() {
         return id;
@@ -56,7 +54,7 @@ public class Localidade {
     /**
      * Metodo usado no construtor de bandeira.
      *
-     * @param id
+     * @param id id
      */
     protected void setId(int id) {
         if (this instanceof Bandeira) {
@@ -67,7 +65,7 @@ public class Localidade {
     /**
      * Metodo que retorna o nome da localidade.
      *
-     * @return
+     * @return nome localidade
      */
     public String getNome() {
         return nome;
@@ -76,7 +74,7 @@ public class Localidade {
     /**
      * Metodo que define o nome da localidade.
      *
-     * @param nome
+     * @param nome localidade
      */
     public void setNome(String nome) {
         this.nome = nome;
@@ -84,6 +82,8 @@ public class Localidade {
 
     /**
      * Método que compara duas localidades com base em seus IDs.
+     *
+     * @param obj objeto
      */
     @Override
     public boolean equals(Object obj) {
@@ -100,8 +100,9 @@ public class Localidade {
         return this.id == other.id;
     }
 
-    /*
-    Método que retorna uma representação em string da localidade.
+    /**
+     * Método que retorna uma representação em string da localidade.
+     * @return string
      */
     @Override
     public String toString() {

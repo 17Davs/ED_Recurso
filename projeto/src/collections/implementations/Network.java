@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 /**
  *
  * @author Utilizador
- * @param <T>
+ * @param <T> tipo
  */
 public class Network<T> implements NetworkADT<T> {
 

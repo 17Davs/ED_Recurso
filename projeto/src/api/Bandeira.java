@@ -6,20 +6,21 @@ package api;
 
 /**
  * Classe responsavel pelo tratamento das Bandeiras
+ *
  * @author David Santos e Rafael Coronel
  */
 public class Bandeira extends Localidade {
 
     /**
-       Variavel do tipo jogador para identificar qual jogador é dono da flag
+     * Variavel do tipo jogador para identificar qual jogador é dono da flag
      */
     private Jogador jogador;
 
-    
     /**
      * Construtor da classe Bandeira
-     * @param 
-     * @param nome 
+     *
+     * @param id id
+     * @param nome nome
      */
     public Bandeira(int id, String nome) {
         super();
@@ -29,16 +30,18 @@ public class Bandeira extends Localidade {
     }
 
     /**
-    Retorna o jogador que é dono da flag
+     * Retorna o jogador que é dono da flag
+     *
+     * @return jogador
      */
     public Jogador getJogador() {
         return jogador;
     }
 
     /**
-    Cria o jogador que ira ser o dono de uma flag
-    
-    @param jogador jogador a ser criado
+     * Cria o jogador que ira ser o dono de uma flag
+     *
+     * @param jogador jogador a ser criado
      */
     public void setJogador(Jogador jogador) {
         this.jogador = jogador;

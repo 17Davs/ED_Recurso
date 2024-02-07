@@ -7,7 +7,7 @@ package collections.interfaces;
 /**
  *
  * @author David Santos
- * @param <T>
+ * @param <T> tipo
  */
 public interface UnorderedListADT<T> extends ListADT<T> {
 

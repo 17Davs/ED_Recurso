@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
 /**
  *
  * @author David Santos
- * @param <T>
+ * @param <T> tipo
  */
 public abstract class ArrayList<T> implements ListADT<T> {
 

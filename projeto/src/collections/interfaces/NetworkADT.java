@@ -7,7 +7,7 @@ package collections.interfaces;
 /**
  * NetworkADT defines the interface to a network.
  *
- * @param <T>
+ * @param <T> tipo
  */
 public interface NetworkADT<T> extends GraphADT<T> {
 

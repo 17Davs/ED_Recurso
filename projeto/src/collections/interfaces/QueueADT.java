@@ -9,7 +9,7 @@ import collections.exceptions.EmptyCollectionException;
 /**
  *
  * @author David Santos
- * @param <T>
+ * @param <T> tipo
  */
 public interface QueueADT<T> {
 

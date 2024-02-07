@@ -9,7 +9,7 @@ import collections.exceptions.EmptyCollectionException;
 /**
  *
  * @author David Santos
- * @param <T>
+ * @param <T> tipo
  */
 public interface StackADT<T> {
 
@@ -24,7 +24,7 @@ public interface StackADT<T> {
      * Removes and returns the top element from this stack.
      *
      * @return T element removed from the top of the stack
-     * @throws collections.exceptions.EmptyCollectionException
+     * @throws collections.exceptions.EmptyCollectionException empty
      */
     public T pop() throws EmptyCollectionException;
 
@@ -32,7 +32,7 @@ public interface StackADT<T> {
      * Returns without removing the top element of this stack.
      *
      * @return T element on top of the stack
-     * @throws collections.exceptions.EmptyCollectionException
+     * @throws collections.exceptions.EmptyCollectionException empty
      */
     public T peek() throws EmptyCollectionException;
 

@@ -10,7 +10,7 @@ import collections.interfaces.OrderedListADT;
 /**
  *
  * @author David Santos
- * @param <T>
+ * @param <T> tipo
  */
 public class ArrayOrderedList<T> extends ArrayList<T> implements OrderedListADT<T> {
 

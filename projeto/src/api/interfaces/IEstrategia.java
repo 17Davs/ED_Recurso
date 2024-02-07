@@ -8,7 +8,7 @@ import api.Bandeira;
 import api.FimCaminhoException;
 import api.Localidade;
 import api.Mapa;
-import collections.implementations.Network;
+
 
 /**
  *
@@ -34,16 +34,15 @@ public interface IEstrategia {
      * Método usado para gerar o caminho de volta para a base do jogador Este
      * metodo é executado depois de o bot recolher a Bandeira Adversária
      *
-     * @param grafo
+     * @param grafo mapa
      */
     public void gerarCaminhoDeVolta(Mapa<Localidade> grafo);
 
     /**
      * Método para atualizar o iterador/caminho da estratégia
      *
-     * @param atual
-     * @param meta
-     * @param grafo
+     * @param atual atual
+     * @param grafo mapa
      */
     public void atualizarCaminho(Localidade atual, Mapa<Localidade> grafo);
 
@@ -51,7 +50,7 @@ public interface IEstrategia {
      * Método para mover com base na estrategia
      *
      * @return a localidade para o bot
-     * @throws api.FimCaminhoException
+     * @throws api.FimCaminhoException fim
      */
     public Localidade executarMovimento() throws FimCaminhoException;
 
